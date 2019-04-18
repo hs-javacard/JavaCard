@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="javacardframework">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/java_card_kit-2_2_1 2/lib/javacardframework.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
