@@ -1,128 +1,63 @@
 package applet;
 
-//import com.licel.jcardsim.io.JavaxSmartCardInterface;
-//import com.licel.jcardsim.smartcardio.CardSimulator;
-//import com.licel.jcardsim.utils.AIDUtil;
 import com.licel.jcardsim.io.JavaxSmartCardInterface;
 import javacard.framework.AID;
-//import javacard.framework.APDU;
+import javacard.framework.Util;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 
 import javax.smartcardio.CommandAPDU;
 import javax.smartcardio.ResponseAPDU;
 import java.util.Arrays;
-//import EPApplet;
 
+import static org.junit.Assert.assertEquals;
 
 public class EPAppletTest {
 
-
     private static final byte[] TEST_APPLET1_AID_BYTES = Hex.decode("01020304050607080A");
-//    private static final String TEST_APPLET1_CLASSNAME = "com.licel.jcardsim.samples.HelloWorldApplet1";
-    private static final AID appletAID = new AID(TEST_APPLET1_AID_BYTES, (short)0, (byte) TEST_APPLET1_AID_BYTES.length);
-
+    private static final AID appletAID = new AID(TEST_APPLET1_AID_BYTES, (short) 0, (byte) TEST_APPLET1_AID_BYTES.length);
 
     @Test
-    public void EPtest(){
-
-
+    public void EPtest() {
 
         JavaxSmartCardInterface sim = new JavaxSmartCardInterface();
-    sim.installApplet(appletAID, EPApplet.class);
-//        sim.installApplet(appletAID, CalcApplet.class);
-
-
+        sim.installApplet(appletAID, EPApplet.class);
         sim.selectApplet(appletAID);
 
-
-        byte cla = 0;
-        byte ins = 0;
+        byte cla = 2;
         byte p1 = 0;
         byte p2 = 0;
-        byte[] data = new byte[] {3,4};
-        byte len = 2;
 
-        CommandAPDU c = new CommandAPDU(cla, ins, p1, p2, data, len);
+        // check card number
+        byte[] data1 = new byte[]{0, 4};
+        CommandAPDU c1 = new CommandAPDU(cla, 0, p1, p2, data1, 2);
+        ResponseAPDU r1 = sim.transmitCommand(c1);
 
-        ResponseAPDU r = sim.transmitCommand(c);
+        short cardNumber = Util.getShort(r1.getData(), (short) 1);
+        assertEquals((short) 4, cardNumber);
 
-        System.out.println("aa");
+        // check soft limit
+        byte[] data2 = new byte[]{0, 0};
+        Util.setShort(data2, (short) 0, (short) 1900);
+        CommandAPDU c2 = new CommandAPDU(cla, 1, p1, p2, data2, 2);
+        ResponseAPDU r2 = sim.transmitCommand(c2);
+
+        System.out.println(r2 + " " + Arrays.toString(r2.getData()));
+
+        byte statusCode2 = r2.getData()[1];
+        assertEquals(1, statusCode2);
+
+        // check pin
+        byte[] data3 = new byte[]{0, 0};
+        Util.setShort(data3, (short) 0, (short) 0);
+        CommandAPDU c3 = new CommandAPDU(cla, 2, p1, p2, data3, 2);
+        ResponseAPDU r3 = sim.transmitCommand(c3);
+
+        System.out.println(r3 + " " + Arrays.toString(r3.getData()));
+
+        byte statusCode3 = r3.getData()[1];
+        assertEquals(1, statusCode3);
+
     }
-
-@Test
-public void test(){
-//    APDU a = new APDU();
-//    javacard.framework.
-
-//    AID appletAID = AIDUtil();
-//    AID appletAID = new AID(new byte[] {1},(short) 0,(byte) 1);
-
-
-
-
-
-//    AID appletAID = new AIDUtil.create("F000000001");
-//    AID appletAID = AIDUtil.create("F000000001");
-//
-//    CardSimulator sim = new CardSimulator();
-
-
-
-    JavaxSmartCardInterface sim = new JavaxSmartCardInterface();
-//    sim.installApplet(appletAID, EPApplet.class);
-    sim.installApplet(appletAID, CalcApplet.class);
-
-
-    sim.selectApplet(appletAID);
-
-
-    byte cla = 0;
-//    byte ins = (byte) 0;
-    byte ins = (byte) '8';
-    byte p1 = 0;
-    byte p2 = 0;
-    byte[] data = new byte[] {3,4};
-    byte len = 2;
-
-    CommandAPDU c = new CommandAPDU(cla, ins, p1, p2, data, len);
-//    CommandAPDU();
-//
-
-    ResponseAPDU aaaaaa = sim.transmitCommand(c);
-    CommandAPDU ca = new CommandAPDU(cla, '+', p1, p2, data, len);
-
-
-    ResponseAPDU aaaaa2 = sim.transmitCommand(ca);
-    CommandAPDU c2 = new CommandAPDU(cla, ins, p1, p2, data, len);
-
-    ResponseAPDU aaaaa3 = sim.transmitCommand(c2);
-    CommandAPDU ca2 = new CommandAPDU(cla, '=', p1, p2, data, len);
-//    APDU a = c;
-
-
-//    ResponseAPDU r = sim.transmitCommand(c);
-//    ResponseAPDU r2 = sim.transmitCommand(ca);
-//
-//    String a = Arrays.toString(r2.getData());
-//    System.out.println(a);
-//    ResponseAPDU r3 = sim.transmitCommand(c);
-//
-    ResponseAPDU r4 = sim.transmitCommand(ca2);
-//
-//    String a2 = Arrays.toString(r4.getData());
-//    System.out.println(a2);
-
-
-//    EPApplet applet = new EPApplet();
-//
-//    applet.process(c);
-
-    System.out.println("Oef");
-}
-
-
-
-
 
 }
