@@ -3,6 +3,10 @@ package applet;
 import com.licel.jcardsim.io.JavaxSmartCardInterface;
 import javacard.framework.AID;
 import javacard.framework.Util;
+import javacard.framework.*;
+import javacard.security.*;
+import javacard.security.RSAPublicKey;
+import javacardx.crypto.Cipher;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 
@@ -38,25 +42,88 @@ public class EPAppletTest {
 
         // check soft limit
         byte[] data2 = new byte[]{0, 0};
-        Util.setShort(data2, (short) 0, (short) 1900);
+        Util.setShort(data2, (short) 0, (short) 1500);
         CommandAPDU c2 = new CommandAPDU(cla, 1, p1, p2, data2, 2);
         ResponseAPDU r2 = sim.transmitCommand(c2);
 
         System.out.println(r2 + " " + Arrays.toString(r2.getData()));
 
         byte statusCode2 = r2.getData()[1];
-        assertEquals(1, statusCode2);
+        assertEquals(-2, statusCode2);
 
         // check pin
         byte[] data3 = new byte[]{0, 0};
-        Util.setShort(data3, (short) 0, (short) 0);
+        short pin = 4;
+        Util.setShort(data3, (short) 0, (short) pin);
         CommandAPDU c3 = new CommandAPDU(cla, 2, p1, p2, data3, 2);
-        ResponseAPDU r3 = sim.transmitCommand(c3);
+        ResponseAPDU r3 = sim.transmitCommand(c3); // 3x wrong pin
+        ResponseAPDU r4 = sim.transmitCommand(c3);
+//        ResponseAPDU r5 = sim.transmitCommand(c3);
 
         System.out.println(r3 + " " + Arrays.toString(r3.getData()));
 
         byte statusCode3 = r3.getData()[1];
-        assertEquals(1, statusCode3);
+        assertEquals(-1, statusCode3);
+
+
+        byte[] data4 = new byte[]{0, 0};
+        short pin2 = 5;
+        Util.setShort(data4, (short) 0, (short) pin2);
+        CommandAPDU c31 = new CommandAPDU(cla, 2, p1, p2, data4, 2);
+        ResponseAPDU r31 = sim.transmitCommand(c31);
+        byte statusCode31 = r31.getData()[1];
+        assertEquals(1, statusCode31);
+
+
+        byte[] data6 = new byte[]{0,0};
+        CommandAPDU c6 = new CommandAPDU(100, 0, p1, p2, data6, 2);
+        ResponseAPDU r6 = sim.transmitCommand(c6);
+        byte statusC = r6.getData()[1];
+
+        byte[] keyBuffer = r6.getData();
+        short expSize = Util.getShort(keyBuffer,(short) 0);
+        short modSize = Util.getShort(keyBuffer,(short) 2);
+
+        RSAPublicKey cardPub = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, true);
+
+        cardPub.setExponent(keyBuffer,(short) 4, expSize);
+        cardPub.setModulus(keyBuffer,(short) (4 + expSize), modSize);
+
+
+        final byte[] myMessage = "Henk!".getBytes();
+        short nonce = 0;
+        final byte[] msg = new byte[100];
+        Util.setShort(msg,(short) 0,nonce);
+        Util.arrayCopy(myMessage,(short)0 ,msg,(short) 2, (short) myMessage.length);
+
+        System.out.println(cardPub.isInitialized());
+        Cipher rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1,false);
+//        if (myMessage.length >= modSize.length - 11) {
+//            System.out.println("Data too long!");
+//        }
+        rsaCipher.init(cardPub, Cipher.MODE_ENCRYPT);
+
+
+
+        final byte[] encryptedMsg = JCSystem.makeTransientByteArray(
+                (short) 128, JCSystem.CLEAR_ON_DESELECT);
+//        rsaCipher.doFinal()
+        rsaCipher.doFinal(msg, (short) 0,
+                (short) msg.length, encryptedMsg, (short) 0);
+
+//        System.out.println();
+
+
+        byte[] data7 = new byte[128];
+        Util.arrayCopy(encryptedMsg,(short) 0, data7,(short) 0,(short) 128);
+        CommandAPDU c7 = new CommandAPDU(100, 1, p1, p2, data7, 2);
+        ResponseAPDU r7 = sim.transmitCommand(c7);
+//        byte statusC = r7.getData()[1];
+
+//        if (!isRSAKeyInitialized) {
+//            ISOException.throwIt(ISO7816.SW_CONDITIONS_NOT_SATISFIED);
+//        }
+
 
     }
 

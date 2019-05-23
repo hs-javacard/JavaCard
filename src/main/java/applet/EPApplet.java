@@ -1,11 +1,23 @@
 package applet;
 
 import javacard.framework.*;
+import javacard.security.*;
+import javacardx.crypto.Cipher;
+//import javacard.framework.OwnerPIN;
+
 
 public class EPApplet extends Applet implements ISO7816 {
 
+    private final static byte PIN_TRY_LIMIT = 3;
+    private final static byte MAX_PIN_SIZE = 4;
     private short cardNumber;
-    private short pin;
+    private OwnerPIN pin;
+    private KeyPair keyPair;
+
+    Cipher rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1,false);
+    private byte[] dummyPinRemoveLater = {0,5};
+
+    private byte[] decryptArray;
 
     private short balance;
 
@@ -20,11 +32,26 @@ public class EPApplet extends Applet implements ISO7816 {
     }
 
     public EPApplet() {
+        pin = new OwnerPIN(PIN_TRY_LIMIT, MAX_PIN_SIZE);
+
+
+        try {
+            keyPair = new KeyPair(KeyPair.ALG_RSA, KeyBuilder.LENGTH_RSA_1024);
+            keyPair.genKeyPair();
+        } catch (CryptoException e) {
+            short reason = e.getReason();
+            ISOException.throwIt(reason);
+        }
+
+        decryptArray = JCSystem.makeTransientByteArray( (short) 128, JCSystem.CLEAR_ON_DESELECT);
+        pin.update(dummyPinRemoveLater,(byte) 0,(byte) 2);
+
+        pin.resetAndUnblock();
         cardNumber = 4;
-        pin = 0;
+//        pin = 0;
         balance = 1950;
 
-        softLimit = 2000;
+        softLimit = 1000;
         hardLimit = 20000;
         register();
     }
@@ -32,6 +59,8 @@ public class EPApplet extends Applet implements ISO7816 {
     public void process(APDU apdu) throws ISOException {
         byte[] buffer = apdu.getBuffer();
         byte cla = buffer[OFFSET_CLA];
+        byte ins = buffer[OFFSET_INS];
+
 
         if (selectingApplet()) { // we ignore this, it makes ins = -92
             return;
@@ -46,6 +75,29 @@ public class EPApplet extends Applet implements ISO7816 {
                 break;
             case 2: // Withdrawal
                 withdrawal(apdu);
+                break;
+            case 100:
+                switch (ins) {
+                    case 0:
+                    RSAPublicKey pb = (RSAPublicKey) keyPair.getPublic();
+//                short pbSize = pb.getSize();
+                    short expSize = pb.getExponent(buffer, (short) 4);
+
+                    short modSize = pb.getModulus(buffer, (short) (expSize + 4));
+//                Util.arrayCopy(,0,buffer,0,pbSize);
+//                Util.setShort(buffer, (short) 0, (short) pbSize);
+                    Util.setShort(buffer, (short) 0, expSize);
+                    Util.setShort(buffer, (short) 2, modSize);
+                    sendResponse(apdu, (short) (expSize + modSize + 4));
+                    break;
+                    case 1:
+                        RSAPrivateKey pk = (RSAPrivateKey) keyPair.getPrivate();
+                        rsaCipher.init(pk, Cipher.MODE_DECRYPT);
+                        rsaCipher.doFinal(buffer, (short) OFFSET_CDATA, (short) 128, decryptArray, (short) 0);
+
+                        int a = 0;
+                        break;
+                }
                 break;
             default:
                 ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
@@ -111,9 +163,16 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = apdu.getBuffer();
 
         short pin = Util.getShort(buffer, OFFSET_CDATA);
-        byte statusCode = this.pin == pin
-                ? (byte) 1
-                : (byte) -1;
+
+        boolean valid = this.pin.check(buffer,OFFSET_CDATA,(byte) 2); // two bytes long
+
+        byte statusCode = -1;
+        if (valid) {
+            statusCode = 1;
+        }
+//        byte statusCode = this.pin == pin
+//                ? (byte) 1
+//                : (byte) -1;
 
         buffer[1] = statusCode;
         sendResponse(apdu, (short) 2);
