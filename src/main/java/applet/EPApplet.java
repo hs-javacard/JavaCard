@@ -37,7 +37,7 @@ public class EPApplet extends Applet implements ISO7816 {
         pin.update(dummyPinRemoveLater, (byte) 0, (byte) 2);
 
         softLimit = 2000;
-        hardLimit = 20000;
+        hardLimit = 10000;
         register();
     }
 
@@ -63,11 +63,14 @@ public class EPApplet extends Applet implements ISO7816 {
         }
 
         switch (cla) {
-            case 0: // Authenticate
-                auth(apdu);
+            case -1:
+                initialize(apdu);
+                break;
+            case 0:
+                changePinMain(apdu);
                 break;
             case 1: // Change soft limit
-                changeSoftLimit(apdu);
+                changeSoftLimitMain(apdu);
                 break;
             case 2: // Payment, so balance decrease
                 payment(apdu);
@@ -81,42 +84,93 @@ public class EPApplet extends Applet implements ISO7816 {
         }
     }
 
-    private void respondWithCardNumber(APDU apdu) {
-        insCounter++;
+    //<editor-fold desc="Initialize">
 
-        Util.setShort(apdu.getBuffer(), (short) 1, cardNumber);
-        sendResponse(apdu, (short) 3);
-    }
-
-    private void checkPin(APDU apdu) {
+    private void initialize(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
 
-        boolean correctPin = pin.check(buffer, OFFSET_CDATA, (byte) 2);
-        byte statusCode;
+        cardNumber = Util.getShort(buffer, (short) 4);
+        balance = Util.getShort(buffer, (short) 6);
+        softLimit = Util.getShort(buffer, (short) 10);
+        hardLimit = Util.getShort(buffer, (short) 12);
 
-        if (correctPin) {
-            insCounter++;
-            pin.reset();
-
-            statusCode = 1;
-        } else {
-            statusCode = -1;
-        }
-
-        buffer[1] = statusCode;
-        sendResponse(apdu, (short) 2);
+        pin.update(buffer, (short) 8, (byte) 2);
+        resetCounters();
     }
 
-    //<editor-fold desc="Auth">
+    //</editor-fold>
 
-    private void auth(APDU apdu) {
+    //<editor-fold desc="Change PIN">
+
+    private void changePinMain(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+        byte ins = buffer[OFFSET_INS];
+
+        switch (ins) {
+            case 0: // respond with card number
+                respondWithCardNumber(apdu);
+                break;
+            case 1: // check pin
+                checkPin(apdu);
+                break;
+            case 2:
+                changePin(apdu);
+                break;
+            default:
+                ISOException.throwIt(SW_INS_NOT_SUPPORTED);
+                break;
+        }
+    }
+
+    private void changePin(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+
+        pin.update(buffer, OFFSET_CDATA, (byte) 2);
+        resetCounters();
+
+        buffer[1] = 1; // set status code
+        sendResponse(apdu, (short) 2);
     }
 
     //</editor-fold>
 
     //<editor-fold desc="Change Soft limit">
 
+    private void changeSoftLimitMain(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+        byte ins = buffer[OFFSET_INS];
+
+        switch (ins) {
+            case 0: // respond with card number
+                respondWithCardNumber(apdu);
+                break;
+            case 1: // check pin
+                checkPin(apdu);
+                break;
+            case 2:
+                changeSoftLimit(apdu);
+                break;
+            default:
+                ISOException.throwIt(SW_INS_NOT_SUPPORTED);
+                break;
+        }
+    }
+
     private void changeSoftLimit(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+        byte statusCode;
+
+        short newSoftLimit = Util.getShort(buffer, OFFSET_CDATA);
+        if (newSoftLimit > hardLimit) {
+            statusCode = -1;
+        } else {
+            statusCode = 1;
+            softLimit = newSoftLimit;
+        }
+
+        buffer[1] = statusCode; // set status code
+        Util.setShort(buffer, (short) 2, softLimit);
+        sendResponse(apdu, (short) 4);
     }
 
     //</editor-fold>
@@ -145,7 +199,6 @@ public class EPApplet extends Applet implements ISO7816 {
                 break;
         }
     }
-
 
     private void checkSoftLimit(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
@@ -218,6 +271,36 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //</editor-fold>
 
+    private void respondWithCardNumber(APDU apdu) {
+        insCounter++;
+
+        Util.setShort(apdu.getBuffer(), (short) 1, cardNumber);
+        sendResponse(apdu, (short) 3);
+    }
+
+    private void checkPin(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+
+        boolean correctPin = pin.check(buffer, OFFSET_CDATA, (byte) 2);
+        byte statusCode;
+
+        if (correctPin) {
+            insCounter++;
+            pin.reset();
+
+            statusCode = 1;
+        } else {
+            statusCode = -1;
+        }
+
+        buffer[1] = statusCode;
+        sendResponse(apdu, (short) 2);
+    }
+
+    private void sendResponse(APDU apdu, short length) {
+        apdu.setOutgoingAndSend((short) 0, length);
+    }
+
     private boolean validCounters(byte cla, byte ins) {
         if (claCounter != -1 && claCounter != cla)
             return false;
@@ -231,10 +314,6 @@ public class EPApplet extends Applet implements ISO7816 {
     private void resetCounters() {
         claCounter = -1;
         insCounter = -1;
-    }
-
-    private void sendResponse(APDU apdu, short length) {
-        apdu.setOutgoingAndSend((short) 0, length);
     }
 
 }

@@ -16,6 +16,7 @@ public class PaymentTest {
     @Test
     public void testSuccessWithPin() {
         JavaxSmartCardInterface sim = TestHelper.createInterface();
+        //TestHelper.runInit(sim);
 
         byte p1 = 0;
         byte p2 = 0;
@@ -64,6 +65,7 @@ public class PaymentTest {
     @Test
     public void testSuccessWithoutPin() {
         JavaxSmartCardInterface sim = TestHelper.createInterface();
+        //TestHelper.runInit(sim);
 
         byte p1 = 0;
         byte p2 = 0;
@@ -102,6 +104,7 @@ public class PaymentTest {
     @Test
     public void testPinTries() {
         JavaxSmartCardInterface sim = TestHelper.createInterface();
+        //TestHelper.runInit(sim);
 
         byte p1 = 0;
         byte p2 = 0;

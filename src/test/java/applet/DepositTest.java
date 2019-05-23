@@ -16,6 +16,7 @@ public class DepositTest {
     @Test
     public void testSuccess() {
         JavaxSmartCardInterface sim = TestHelper.createInterface();
+        //TestHelper.runInit(sim);
 
         byte p1 = 0;
         byte p2 = 0;
