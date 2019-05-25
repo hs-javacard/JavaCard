@@ -1,17 +1,27 @@
 package applet;
 
 import javacard.framework.*;
+import javacard.security.*;
+import javacardx.crypto.Cipher;
 
 public class EPApplet extends Applet implements ISO7816 {
 
     private static final byte PIN_TRY_LIMIT = 3;
     private static final byte MAX_PIN_SIZE = 4;
 
-    private short cardNumber;
+    private KeyPair keyPair;
+    private Cipher rsaCipher;
+
+    private RSAPublicKey pkTerminal;
+    private RSAPublicKey pkBank;
+
+    private byte[] decryptBuffer;
+    private byte[] encryptBuffer;
 
     private OwnerPIN pin;
     private byte[] dummyPinRemoveLater = {0, 0};
 
+    private short cardNumber;
     private short balance;
     private short paymentAmount;
 
@@ -19,6 +29,8 @@ public class EPApplet extends Applet implements ISO7816 {
 
     private short softLimit;
     private short hardLimit;
+
+    private short nonce;
 
     // We assume card is ejected after completed interaction and these values get reset
     private short claCounter;
@@ -30,12 +42,25 @@ public class EPApplet extends Applet implements ISO7816 {
     }
 
     public EPApplet() {
-        cardNumber = 4;
-        balance = 4000;
+
+        try {
+            keyPair = new KeyPair(KeyPair.ALG_RSA, KeyBuilder.LENGTH_RSA_1024);
+            keyPair.genKeyPair();
+        } catch (CryptoException e) {
+            short reason = e.getReason();
+            ISOException.throwIt(reason);
+        }
+
+        rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
+        pkTerminal = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, true);
+
+        decryptBuffer = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
 
         pin = new OwnerPIN(PIN_TRY_LIMIT, MAX_PIN_SIZE);
         pin.update(dummyPinRemoveLater, (byte) 0, (byte) 2);
 
+        cardNumber = 4;
+        balance = 4000;
         softLimit = 2000;
         hardLimit = 10000;
         register();
@@ -62,6 +87,13 @@ public class EPApplet extends Applet implements ISO7816 {
             return;
         }
 
+        decrypt(apdu);
+
+        if (ins == 0)
+            setTerminalKey(apdu);
+
+        setNonce(apdu);
+
         switch (cla) {
             case -1:
                 initialize(apdu);
@@ -84,9 +116,56 @@ public class EPApplet extends Applet implements ISO7816 {
         }
     }
 
+    private void setNonce(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+        Util.setShort(buffer, (short) 0, (short) 2);
+    }
+
+    private void setTerminalKey(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+        KeyHelper.init(pkTerminal, buffer, (short) 0);
+    }
+
+    public void decrypt(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+
+        RSAPrivateKey pk = (RSAPrivateKey) keyPair.getPrivate();
+        rsaCipher.init(pk, Cipher.MODE_DECRYPT);
+        rsaCipher.doFinal(buffer, (short) OFFSET_CDATA, (short) 128, decryptBuffer, (short) 0);
+    }
+
+    public void encrypt(APDU apdu){
+        rsaCipher.init(pkTerminal, Cipher.MODE_ENCRYPT);
+        rsaCipher.doFinal(encryptBuffer, (short) 0,
+                (short) encryptBuffer.length, apdu.getBuffer(), (short) 0);
+    }
+
     //<editor-fold desc="Initialize">
 
     private void initialize(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+        byte ins = buffer[OFFSET_INS];
+
+        switch (ins) {
+            case 0:
+                setSkBank(apdu);
+                break;
+            case 1:
+                setInitData(apdu);
+                break;
+            default:
+                ISOException.throwIt(SW_INS_NOT_SUPPORTED);
+                break;
+        }
+
+    }
+
+    private void setSkBank(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+        KeyHelper.init(pkBank, buffer, (short) 0);
+    }
+
+    private void setInitData(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
 
         cardNumber = Util.getShort(buffer, (short) 4);
@@ -96,6 +175,20 @@ public class EPApplet extends Applet implements ISO7816 {
 
         pin.update(buffer, (short) 8, (byte) 2);
         resetCounters();
+
+        sendPublicKey(apdu);
+    }
+
+    private void sendPublicKey(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+
+        RSAPublicKey pb = (RSAPublicKey) keyPair.getPublic();
+        short expSize = pb.getExponent(buffer, (short) 4);
+        short modSize = pb.getModulus(buffer, (short) (expSize + 4));
+
+        Util.setShort(buffer, (short) 0, expSize);
+        Util.setShort(buffer, (short) 2, modSize);
+        sendResponse(apdu, (short) (expSize + modSize + 4));
     }
 
     //</editor-fold>

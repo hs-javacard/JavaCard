@@ -4,16 +4,10 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="38745805-c29f-498e-9b01-7bc9133619c9" name="Default Changelist" comment="Working payment and deposit. With tests. Without encryption">
-      <change afterPath="$PROJECT_DIR$/src/test/java/applet/AuthTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/applet/InitTest.java" afterDir="false" />
+    <list default="true" id="38745805-c29f-498e-9b01-7bc9133619c9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,127 +21,36 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5135909">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="448">
-                  <caret line="98" column="24" selection-start-line="98" selection-start-column="24" selection-end-line="98" selection-end-column="24" />
-                  <folding>
-                    <element signature="e#2822#2855#0" />
-                    <element signature="e#2822#2862#0" />
-                    <element signature="e#3344#3374#0" />
-                    <element signature="e#4979#5009#0" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="64">
-                  <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="255">
-                  <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="34" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="103">
-                  <caret line="62" column="34" selection-start-line="62" selection-start-column="34" selection-end-line="62" selection-end-column="34" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="187">
-                  <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/InitTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="255">
-                  <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/PaymentTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-730">
-                  <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/InitTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="255">
-                  <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Util.class">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="331">
-                  <caret line="65" selection-start-line="65" selection-end-line="65" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="697">
-                  <caret line="41" column="50" selection-start-line="41" selection-start-column="50" selection-end-line="41" selection-end-column="50" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="123" column="35" lean-forward="true" selection-start-line="123" selection-start-column="35" selection-end-line="123" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#changeSoftLimitMain#0;class#EPApplet#0" />
+                <element signature="e#2822#2862#0" />
+                <element signature="e#3344#3374#0" />
+                <element signature="e#4979#5009#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -189,12 +92,13 @@
         <option value="$PROJECT_DIR$/src/test/java/applet/EPAppletTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/InitTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/AuthTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" />
       </list>
     </option>
   </component>
@@ -458,7 +362,7 @@
       <updated>1552728735560</updated>
       <workItem from="1556193039125" duration="7156000" />
       <workItem from="1558003203590" duration="11115000" />
-      <workItem from="1558606897628" duration="6179000" />
+      <workItem from="1558606897628" duration="9889000" />
     </task>
     <task id="LOCAL-00001" summary="Basic tests working with withdrawal protocol">
       <created>1556201001728</created>
@@ -474,13 +378,17 @@
       <option name="project" value="LOCAL" />
       <updated>1558016079242</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="All commands are working. Without encryption">
+      <created>1558615612636</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1558615612637</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AuthTest_runAuth - 2019.05.23 at 14h 37m 57s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="AuthTest_runAuth - 2019.05.23 at 14h 38m 15s.xml">
       <configuration name="AuthTest.runAuth" configurationId="JUnit" />
     </history-entry>
@@ -508,15 +416,18 @@
     <history-entry file="InitTest_testSuccess - 2019.05.23 at 14h 43m 13s.xml">
       <configuration name="InitTest.testSuccess" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="applet_in_JavaCard - 2019.05.23 at 14h 45m 57s.xml">
+      <configuration name="applet in JavaCard" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24952000" />
+    <option name="totallyTimeSpent" value="28662000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.119456366" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19957082" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -526,8 +437,8 @@
       <window_info anchor="bottom" id="Inspection Results" weight="0.124096386" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.19036144" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.28674698" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.19036144" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.28674698" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -592,7 +503,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Basic tests working with withdrawal protocol" />
     <MESSAGE value="Working payment and deposit. With tests. Without encryption" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working payment and deposit. With tests. Without encryption" />
+    <MESSAGE value="All commands are working. Without encryption" />
+    <option name="LAST_COMMIT_MESSAGE" value="All commands are working. Without encryption" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -605,7 +517,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>264</line>
+          <line>356</line>
           <properties />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
@@ -697,13 +609,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Applet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="21" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -758,29 +663,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="50" selection-start-line="41" selection-start-column="50" selection-end-line="41" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="98" column="24" selection-start-line="98" selection-start-column="24" selection-end-line="98" selection-end-column="24" />
-          <folding>
-            <element signature="e#2822#2855#0" />
-            <element signature="e#2822#2862#0" />
-            <element signature="e#3344#3374#0" />
-            <element signature="e#4979#5009#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -824,10 +706,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/PaymentTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-730">
-          <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
+        <state relative-caret-position="381">
+          <caret line="149" column="24" lean-forward="true" selection-start-line="149" selection-start-column="24" selection-end-line="149" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="41" column="50" selection-start-line="41" selection-start-column="50" selection-end-line="41" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Applet.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="123" column="35" lean-forward="true" selection-start-line="123" selection-start-column="35" selection-end-line="123" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#changeSoftLimitMain#0;class#EPApplet#0" />
+            <element signature="e#2822#2862#0" />
+            <element signature="e#3344#3374#0" />
+            <element signature="e#4979#5009#0" />
           </folding>
         </state>
       </provider>
