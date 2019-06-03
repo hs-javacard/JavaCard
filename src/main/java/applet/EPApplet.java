@@ -164,26 +164,23 @@ public class EPApplet extends Applet implements ISO7816 {
         return (short) (encSize + 2 + 16);
     }
 
-//    private void decrypt(APDU apdu) {
-//        byte[] buffer = apdu.getBuffer();
-//
-//
-//        short len = Util.getShort(buffer, (short) 0);
-//        short blocks = (short) (len / 16);
-//        if ((len % 16) > 0)
-//            blocks++;
-//
-//        short encSize = (short) (blocks * 16);
-//
-//        Util.arrayCopy(responsedata, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
-//
-//
-//        aesCipher.init(sharedKey, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
-//
-//        aesCipher.doFinal(responsedata, (short) 2, (short) encSize, plaintext, (short) 0);
-//        System.out.println(new String(plaintext));
-////
-//    }
+    private void decrypt(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+
+        short len = Util.getShort(buffer, (short) 0);
+        short blocks = (short) (len / 16);
+        if ((len % 16) > 0) {
+            blocks++;
+        }
+
+        short encSize = (short) (blocks * 16);
+
+        Util.arrayCopy(buffer, (short) 2, aesWorkspace, (short) 0, encSize);
+        Util.arrayCopy(buffer, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
+
+        aesCipher.init(sharedKey, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
+        aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 0);
+    }
 
     private void auth(APDU apdu) {
     }
