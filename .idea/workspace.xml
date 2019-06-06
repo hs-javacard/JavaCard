@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38745805-c29f-498e-9b01-7bc9133619c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/applet/EPApplet2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" afterDir="false" />
     </list>
@@ -25,27 +25,32 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="123" column="35" lean-forward="true" selection-start-line="123" selection-start-column="35" selection-end-line="123" selection-end-column="35" />
+            <state relative-caret-position="95">
+              <caret line="337" column="26" selection-start-line="337" selection-start-column="26" selection-end-line="337" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#changeSoftLimitMain#0;class#EPApplet#0" />
-                <element signature="e#2822#2862#0" />
-                <element signature="e#3344#3374#0" />
-                <element signature="e#4979#5009#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
+            <state relative-caret-position="306">
+              <caret line="26" column="66" selection-start-line="26" selection-start-column="66" selection-end-line="26" selection-end-column="66" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet2.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="20" column="30" selection-end-line="319" />
             </state>
           </provider>
         </entry>
@@ -71,6 +76,9 @@
       <find>cla&quot;, 2,</find>
       <find>28160</find>
       <find>CLA</find>
+      <find>buffer</find>
+      <find>respondWithCardNumber</find>
+      <find>totalToday</find>
     </findStrings>
     <replaceStrings>
       <replace>CLA</replace>
@@ -98,6 +106,7 @@
         <option value="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet2.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" />
       </list>
     </option>
@@ -134,38 +143,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
               <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="jcardsim-2.2.1-all.jar" type="ab9368bb:PsiFileNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="jcardsim-2.2.1-all.jar" type="ab9368bb:PsiFileNode" />
-              <item name="javacard" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="jcardsim-2.2.1-all.jar" type="ab9368bb:PsiFileNode" />
-              <item name="javacard" type="462c0819:PsiDirectoryNode" />
-              <item name="framework" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
@@ -222,7 +206,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -362,7 +345,10 @@
       <updated>1552728735560</updated>
       <workItem from="1556193039125" duration="7156000" />
       <workItem from="1558003203590" duration="11115000" />
-      <workItem from="1558606897628" duration="9889000" />
+      <workItem from="1558606897628" duration="9913000" />
+      <workItem from="1559127878867" duration="6064000" />
+      <workItem from="1559560123085" duration="5133000" />
+      <workItem from="1559819749386" duration="331000" />
     </task>
     <task id="LOCAL-00001" summary="Basic tests working with withdrawal protocol">
       <created>1556201001728</created>
@@ -385,7 +371,14 @@
       <option name="project" value="LOCAL" />
       <updated>1558615612637</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Started working on encryption">
+      <created>1558777273365</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1558777273366</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -421,23 +414,22 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28662000" />
+    <option name="totallyTimeSpent" value="40214000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19957082" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2081545" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Image Layers" order="6" />
-      <window_info anchor="bottom" id="Inspection Results" weight="0.124096386" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.19036144" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.19036144" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.28674698" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -445,10 +437,11 @@
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.22831859" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Statistic" order="9" />
-      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Version Control" order="10" visible="true" weight="0.05060241" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.32891566" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="13" />
+      <window_info anchor="bottom" id="Inspection Results" order="14" weight="0.124096386" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -500,11 +493,22 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Basic tests working with withdrawal protocol" />
     <MESSAGE value="Working payment and deposit. With tests. Without encryption" />
     <MESSAGE value="All commands are working. Without encryption" />
-    <option name="LAST_COMMIT_MESSAGE" value="All commands are working. Without encryption" />
+    <MESSAGE value="Started working on encryption" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started working on encryption" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -514,12 +518,6 @@
           <line>123</line>
           <properties />
           <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>356</line>
-          <properties />
-          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -714,16 +712,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="41" column="50" selection-start-line="41" selection-start-column="50" selection-end-line="41" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Applet.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
@@ -731,26 +719,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
+        <state relative-caret-position="95">
+          <caret line="337" column="26" selection-start-line="337" selection-start-column="26" selection-end-line="337" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="123" column="35" lean-forward="true" selection-start-line="123" selection-start-column="35" selection-end-line="123" selection-end-column="35" />
+        <state relative-caret-position="306">
+          <caret line="26" column="66" selection-start-line="26" selection-start-column="66" selection-end-line="26" selection-end-column="66" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#changeSoftLimitMain#0;class#EPApplet#0" />
-            <element signature="e#2822#2862#0" />
-            <element signature="e#3344#3374#0" />
-            <element signature="e#4979#5009#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="30" selection-end-line="319" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/security/RSAPrivateKey.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/security/PrivateKey.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="7" column="39" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/JCSystem.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/security/Key.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="10" column="10" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="12" column="74" selection-start-line="12" selection-start-column="74" selection-end-line="12" selection-end-column="74" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
