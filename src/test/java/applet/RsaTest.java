@@ -41,7 +41,7 @@ public class RsaTest {
         System.out.println(pb.isInitialized());
 
         Cipher rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
-        rsaCipher.init(pb, Cipher.MODE_DECRYPT);
+        rsaCipher.init(keyPair.getPrivate(), Cipher.MODE_DECRYPT);
 
         rsaCipher.doFinal(keyBuffer, (short) 0, (short) keyBuffer.length, decryptBuffer, (short) 0);
 
