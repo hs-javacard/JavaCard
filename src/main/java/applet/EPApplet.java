@@ -11,10 +11,20 @@ public class EPApplet extends Applet implements ISO7816 {
 
     private RSAPublicKey pkTerminal;
     private KeyPair keyPair;
+    private AESKey sharedKey;
+
+    private Cipher aesCipher;
     private Cipher rsaCipher;
 
     private byte[] buffer1;
-    private byte[] buffer2;
+
+    private byte[] rsaWorkspace;
+    private byte[] aesWorkspace;
+
+    private RandomData random;
+
+    private byte[] theKey = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
+    private byte[] ivdata;
 
     private OwnerPIN pin;
 
@@ -50,11 +60,22 @@ public class EPApplet extends Applet implements ISO7816 {
             ISOException.throwIt(reason);
         }
 
+        aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
         pkTerminal = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, true);
 
         buffer1 = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
-        buffer2 = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
+
+        rsaWorkspace = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
+        aesWorkspace = JCSystem.makeTransientByteArray((short) 256, JCSystem.CLEAR_ON_DESELECT);
+
+        ivdata = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
+//        theKey = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
+//        theKey = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
+
+        random = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
+
+        sharedKey = (AESKey) KeyBuilder.buildKey(KeyBuilder.TYPE_AES, KeyBuilder.LENGTH_AES_128, false);
 
         cardNumber = 4;
         balance = 4000;
@@ -84,10 +105,8 @@ public class EPApplet extends Applet implements ISO7816 {
             return;
         }
 
-        decrypt(apdu);
-
-        if (ins == 0)
-            initTerminalKey(apdu);
+//        if (ins == 0)
+//            initTerminalKey(apdu);
 
         switch (cla) {
             case -1:
@@ -104,6 +123,13 @@ public class EPApplet extends Applet implements ISO7816 {
                 break;
             case 3: // Deposit, so balance increase
                 deposit(apdu);
+                break;
+            case 101:
+
+                Util.arrayCopy("Henk!".getBytes(), (short) 0, buffer, (short) 0, (short) 5);
+
+                short encSize = encryptAes(apdu, (short) 5);
+                sendResponse(apdu, encSize);
                 break;
             default:
                 ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
@@ -348,17 +374,20 @@ public class EPApplet extends Applet implements ISO7816 {
 
     private void retrievePkTAndSendCardNumber(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
-        nonce = Util.getShort(buffer, OFFSET_CDATA);
-        KeyHelper.init(pkTerminal, buffer, (short) (OFFSET_CDATA + 2));
+//        nonce = Util.getShort(buffer, OFFSET_CDATA);
+        KeyHelper.init(pkTerminal, buffer, (short) (OFFSET_CDATA + 0));
 
         insCounter++;
 
-        buffer[0] = claCounter;
-        Util.setShort(buffer, (short) 1, nonce);
-        Util.setShort(buffer, (short) 3, cardNumber);
+        Util.arrayCopy("Henk2".getBytes(), (short) 0, buffer, (short) 0, (short) 5);
+//        buffer[0] = claCounter;
+//        Util.setShort(buffer, (short) 1, nonce);
+//        Util.setShort(buffer, (short) 3, cardNumber);
 
-        //ENCRYPT HERE
-        sendResponse(apdu, (short) 5);
+        short whatisthis = encryptRsa(apdu, (short) 5, pkTerminal);
+
+
+        sendResponse(apdu, (short) 128);
     }
 
     private void retrieveSymmetricKey(APDU apdu) {
@@ -427,7 +456,9 @@ public class EPApplet extends Applet implements ISO7816 {
         KeyHelper.init(pkTerminal, buffer1, (short) 0);
     }
 
-    public void decrypt(APDU apdu) {
+    //<editor-fold desc="RSA">
+
+    public void decryptRsa(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
 
         RSAPrivateKey pk = (RSAPrivateKey) keyPair.getPrivate();
@@ -435,9 +466,72 @@ public class EPApplet extends Applet implements ISO7816 {
         rsaCipher.doFinal(buffer, (short) OFFSET_CDATA, (short) 128, buffer1, (short) 0);
     }
 
-    public void encrypt(Key key, byte[] from, byte[] to) {
+    public short encryptRsa(APDU apdu, short msgSize, Key key) {
+        byte[] buffer = apdu.getBuffer();
+        Util.arrayCopy(buffer, (short) 0, rsaWorkspace, (short) 0, msgSize);
+
+        rsaCipher.init(key, Cipher.MODE_ENCRYPT);
+        return rsaCipher.doFinal(rsaWorkspace, (short) 0, (short) msgSize, buffer, (short) 0);
+    }
+
+    public void encryptRsa(Key key, byte[] from, byte[] to) {
         rsaCipher.init(key, Cipher.MODE_ENCRYPT);
         rsaCipher.doFinal(from, (short) 0, (short) from.length, to, (short) 0);
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="AES">
+
+    private short encryptAes(APDU apdu, short msgSize) {
+        byte[] buffer = apdu.getBuffer();
+
+        Util.arrayCopy(buffer, (short) 0, aesWorkspace, (short) 0, msgSize);
+
+        short blocks = getBlockSize(msgSize);
+        short encSize = (short) (blocks * 16);
+        short paddingSize = (short) (encSize - msgSize);
+
+        Util.arrayFillNonAtomic(aesWorkspace, msgSize, paddingSize, (byte) 3);
+
+        // generate IV
+        random.generateData(ivdata, (short) 0, (short) 16);
+
+        sharedKey.setKey(theKey, (short) 0);
+
+        aesCipher.init(sharedKey, Cipher.MODE_ENCRYPT, ivdata, (short) 0, (short) 16);
+        aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 2);
+
+        short offset = 16 + 2;
+
+        Util.arrayCopy(ivdata, (short) 0, buffer, offset, (short) 16);
+        Util.setShort(buffer, (short) 0, msgSize);
+
+        return (short) (encSize + 2 + 16);
+    }
+
+    private void decryptAes(APDU apdu) {
+        byte[] buffer = apdu.getBuffer();
+
+        short msgSize = Util.getShort(buffer, (short) 0);
+        short blocks = getBlockSize(msgSize);
+        short encSize = (short) (blocks * 16);
+
+        Util.arrayCopy(buffer, (short) 2, aesWorkspace, (short) 0, encSize);
+        Util.arrayCopy(buffer, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
+
+        aesCipher.init(sharedKey, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
+        aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 0);
+    }
+
+    private short getBlockSize(short msgSize) {
+        short blocks = (short) (msgSize / 16);
+        if ((msgSize % 16) > 0)
+            blocks++;
+
+        return blocks;
+    }
+
+    //</editor-fold>
 
 }

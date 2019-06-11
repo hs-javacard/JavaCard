@@ -9,8 +9,8 @@ public class KeyHelper {
         short expSize = Util.getShort(buffer, offset);
         short modSize = Util.getShort(buffer, (short) (offset + 2));
 
-        key.setExponent(buffer, (short) (offset + 6), expSize);
-        key.setModulus(buffer, (short) ((offset + 6) + expSize), modSize);
+        key.setExponent(buffer, (short) (offset + 4), expSize);
+        key.setModulus(buffer, (short) ((offset + 4) + expSize), modSize);
     }
 
 }
