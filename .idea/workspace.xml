@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38745805-c29f-498e-9b01-7bc9133619c9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/applet/NonceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/AesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/AesTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/AuthTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/AuthTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -23,26 +24,61 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.48569384">
+    <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="236">
-                  <caret line="182" lean-forward="true" selection-start-line="182" selection-end-line="182" />
+                <state relative-caret-position="279">
+                  <caret line="497" column="62" selection-start-line="497" selection-start-column="62" selection-end-line="497" selection-end-column="62" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="e#4554#4894#0" />
+                    <element signature="e#6828#6868#0" />
+                    <element signature="e#8045#8075#0" />
+                    <element signature="e#13805#13836#0" />
+                    <element signature="e#14783#14809#0" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/base/SimulatorRuntime.class">
+            <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="340">
-                  <caret line="179" selection-start-line="179" selection-end-line="179" />
+                <state relative-caret-position="255">
+                  <caret line="22" lean-forward="true" selection-end-line="53" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="249">
+                  <caret line="18" lean-forward="true" selection-end-line="40" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="187">
+                  <caret line="71" column="11" lean-forward="true" selection-end-line="98" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="188">
+                  <caret line="30" selection-start-line="30" selection-end-line="30" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -50,100 +86,24 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+        <leaf>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
+            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="86">
-                  <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
+                <state relative-caret-position="538">
+                  <caret line="93" column="55" lean-forward="true" selection-start-line="93" selection-start-column="9" selection-end-line="93" selection-end-column="55" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+            <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="247">
-                  <caret line="48" selection-start-line="48" selection-end-line="48" />
+                <state relative-caret-position="154">
+                  <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="238">
-                  <caret line="17" selection-start-line="17" selection-end-line="17" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runners/model/FrameworkMethod.class">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="195">
-                  <caret line="29" selection-start-line="29" selection-end-line="29" />
-                  <folding>
-                    <element signature="e#870#1063#0" expanded="true" />
-                    <element signature="e#1062#1063#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/runners/statements/InvokeMethod.class">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="272">
-                  <caret line="20" selection-start-line="20" selection-end-line="20" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runners/ParentRunner.class">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="417">
-                  <caret line="240" selection-start-line="240" selection-end-line="240" />
-                  <folding>
-                    <element signature="e#5951#6086#0" expanded="true" />
-                    <element signature="e#6085#6086#0" expanded="true" />
-                    <element signature="e#6484#6648#0" expanded="true" />
-                    <element signature="e#6647#6648#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runner/JUnitCore.class">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="280">
-                  <caret line="76" selection-start-line="76" selection-end-line="76" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runners/BlockJUnit4ClassRunner.class">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="246">
-                  <caret line="49" selection-start-line="49" selection-end-line="49" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/RsaTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="51">
-                  <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
                 </state>
               </provider>
             </entry>
@@ -187,6 +147,9 @@
       <find>{0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d}</find>
       <find>decryptRsa</find>
       <find>cardPk</find>
+      <find>decryptAes</find>
+      <find>buffer1</find>
+      <find>r.getData()</find>
     </findStrings>
     <replaceStrings>
       <replace>CLA</replace>
@@ -207,9 +170,6 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/applet/CalcApplet.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/EPAppletTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet2.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/RsaTest.java" />
@@ -218,6 +178,9 @@
         <option value="$PROJECT_DIR$/src/test/java/applet/AesTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/AuthTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" />
       </list>
     </option>
@@ -458,7 +421,7 @@
       <workItem from="1559127878867" duration="6064000" />
       <workItem from="1559560123085" duration="5133000" />
       <workItem from="1559819749386" duration="8973000" />
-      <workItem from="1560257258984" duration="13399000" />
+      <workItem from="1560257258984" duration="17438000" />
     </task>
     <task id="LOCAL-00001" summary="Basic tests working with withdrawal protocol">
       <created>1556201001728</created>
@@ -509,28 +472,17 @@
       <option name="project" value="LOCAL" />
       <updated>1560339722721</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Merge branch 'master' of https://github.com/hs-javacard/JavaCard&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/applet/EPApplet.java">
+      <created>1560345923902</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1560345923902</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 01m 46s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 02m 09s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 02m 35s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 03m 51s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 16m 12s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 16m 16s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="RsaTest_EPtest - 2019.06.12 at 15h 17m 13s.xml">
       <configuration name="RsaTest.EPtest" configurationId="JUnit" />
     </history-entry>
@@ -543,9 +495,27 @@
     <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 19m 25s.xml">
       <configuration name="AuthTest.runAuth" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 23m 54s.xml">
+      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 29m 41s.xml">
+      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="AuthTest_runAuth - 2019.06.12 at 15h 30m 32s.xml">
+      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="AuthTest_runAuth - 2019.06.12 at 16h 20m 29s.xml">
+      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="AuthTest_runAuth - 2019.06.12 at 16h 21m 13s.xml">
+      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="AuthTest_runAuth - 2019.06.12 at 16h 23m 50s.xml">
+      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62255000" />
+    <option name="totallyTimeSpent" value="66294000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -560,8 +530,8 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.21927711" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.2626506" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.21927711" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.2626506" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -586,7 +556,7 @@
       <window_info anchor="right" id="Database" order="10" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.1416309" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1416309" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24964234" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -595,8 +565,8 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.35301206" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.2626506" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.21927711" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.2626506" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -642,23 +612,12 @@
     <MESSAGE value="Getting code ready for aes" />
     <MESSAGE value="Commiet to githoeb" />
     <MESSAGE value="Partially working rsa and aes encryption" />
-    <option name="LAST_COMMIT_MESSAGE" value="Partially working rsa and aes encryption" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/hs-javacard/JavaCard&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/applet/EPApplet.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/hs-javacard/JavaCard&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/applet/EPApplet.java" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>411</line>
-          <properties />
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>383</line>
-          <properties />
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java</url>
           <line>34</line>
@@ -667,33 +626,9 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>136</line>
-          <properties />
-          <option name="timeStamp" value="50" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>542</line>
+          <line>546</line>
           <properties />
           <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>414</line>
-          <properties />
-          <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java</url>
-          <line>49</line>
-          <properties />
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>488</line>
-          <properties />
-          <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java</url>
@@ -707,17 +642,16 @@
           <properties />
           <option name="timeStamp" value="56" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
+          <line>492</line>
+          <properties />
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/Downloads/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/io/JavaxSmartCardInterface.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/Downloads/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/base/Simulator.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -783,13 +717,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/ISO7816.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/java_card_kit-2_2_1/lib/javacardframework.jar!/javacard/framework/ISO7816.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -808,20 +735,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="218">
           <caret line="88" column="16" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Applet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -853,13 +766,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre/lib/rt.jar!/javax/smartcardio/CommandAPDU.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -885,13 +791,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="147" selection-start-line="147" selection-end-line="147" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="22" column="21" lean-forward="true" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -971,23 +870,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/AesTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="86" column="16" selection-start-line="86" selection-start-column="16" selection-end-line="86" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/base/SimulatorRuntime.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="179" selection-start-line="179" selection-end-line="179" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/InitTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1008,10 +890,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/RsaTest.java">
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/ISO7816.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="204">
+          <caret line="15" column="32" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Applet.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
         </state>
       </provider>
     </entry>
@@ -1033,20 +929,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runners/BlockJUnit4ClassRunner.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runners/ParentRunner.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="417">
@@ -1062,25 +944,84 @@
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runner/JUnitCore.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
+        <state relative-caret-position="399">
           <caret line="76" selection-start-line="76" selection-end-line="76" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/runners/BlockJUnit4ClassRunner.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
+        <state relative-caret-position="246">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/RsaTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/NonceTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/AesTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="86" column="16" selection-start-line="86" selection-start-column="16" selection-end-line="86" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="22" lean-forward="true" selection-end-line="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="18" lean-forward="true" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="71" column="11" lean-forward="true" selection-end-line="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/base/SimulatorRuntime.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="179" selection-start-line="179" selection-end-line="179" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        <state relative-caret-position="188">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1089,10 +1030,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="182" lean-forward="true" selection-start-line="182" selection-end-line="182" />
+        <state relative-caret-position="279">
+          <caret line="497" column="62" selection-start-line="497" selection-start-column="62" selection-end-line="497" selection-end-column="62" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4554#4894#0" />
+            <element signature="e#6828#6868#0" />
+            <element signature="e#8045#8075#0" />
+            <element signature="e#13805#13836#0" />
+            <element signature="e#14783#14809#0" />
           </folding>
         </state>
       </provider>
