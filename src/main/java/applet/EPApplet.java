@@ -131,6 +131,14 @@ public class EPApplet extends Applet implements ISO7816 {
                 short encSize = encryptAes(apdu, (short) 5);
                 sendResponse(apdu, encSize);
                 break;
+
+            case 102:
+                // get encrypted message, blocksize + {msgsize + msg}sk
+                decryptAes(apdu);
+                short len = Util.getShort(buffer,(short) 0);
+//                short a = 0;
+                sendResponse(apdu, (short) (len+2));
+                // return plain text for now
             default:
                 ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
                 break;
@@ -486,18 +494,18 @@ public class EPApplet extends Applet implements ISO7816 {
     private short encryptAes(APDU apdu, short msgSize) {
         byte[] buffer = apdu.getBuffer();
 
-        Util.arrayCopy(buffer, (short) 0, aesWorkspace, (short) 0, msgSize);
+        Util.arrayCopy(buffer, (short) 0, aesWorkspace, (short) 2, msgSize);
 
-        short blocks = getBlockSize(msgSize);
+        short blocks = getBlockSize((short) (msgSize+2));
         short encSize = (short) (blocks * 16);
         short paddingSize = (short) (encSize - msgSize);
 
-        Util.arrayFillNonAtomic(aesWorkspace, msgSize, paddingSize, (byte) 3);
-
+        Util.arrayFillNonAtomic(aesWorkspace, (short) (msgSize+2), paddingSize, (byte) 3);
+        Util.setShort(aesWorkspace,(short) 0,msgSize);
         // generate IV
         random.generateData(ivdata, (short) 0, (short) 16);
 
-        sharedKey.setKey(theKey, (short) 0);
+        sharedKey.setKey(theKey, (short) 0); // Should be done after receiving
 
         aesCipher.init(sharedKey, Cipher.MODE_ENCRYPT, ivdata, (short) 0, (short) 16);
         aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 2);
@@ -505,7 +513,7 @@ public class EPApplet extends Applet implements ISO7816 {
         short offset = 16 + 2;
 
         Util.arrayCopy(ivdata, (short) 0, buffer, offset, (short) 16);
-        Util.setShort(buffer, (short) 0, msgSize);
+        Util.setShort(buffer, (short) 0, encSize);
 
         return (short) (encSize + 2 + 16);
     }
@@ -513,13 +521,15 @@ public class EPApplet extends Applet implements ISO7816 {
     private void decryptAes(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
 
-        short msgSize = Util.getShort(buffer, (short) 0);
-        short blocks = getBlockSize(msgSize);
-        short encSize = (short) (blocks * 16);
+        short encSize = Util.getShort(buffer, (short) OFFSET_CDATA);
+        //short msgSize = Util.getShort(buffer, (short) 0);
+//        short blocks = getBlockSize(msgSize);
+//        short encSize = (short) (blocks * 16);
 
-        Util.arrayCopy(buffer, (short) 2, aesWorkspace, (short) 0, encSize);
-        Util.arrayCopy(buffer, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
+        Util.arrayCopy(buffer, (short) (OFFSET_CDATA + 2), aesWorkspace, (short) 0, encSize);
+        Util.arrayCopy(buffer, (short) (OFFSET_CDATA + encSize + 2), ivdata, (short) 0, (short) 16);
 
+        sharedKey.setKey(theKey, (short) 0);
         aesCipher.init(sharedKey, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
         aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 0);
     }
