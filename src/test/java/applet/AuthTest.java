@@ -2,6 +2,8 @@ package applet;
 
 import com.licel.jcardsim.io.JavaxSmartCardInterface;
 import javacard.framework.Util;
+import javacard.security.KeyPair;
+import javacard.security.RSAPublicKey;
 import org.junit.Test;
 
 import javax.smartcardio.ResponseAPDU;
@@ -19,47 +21,96 @@ public class AuthTest {
         byte p1 = 0;
         byte p2 = 0;
 
+        RSAPublicKey cardPk = TestHelper.runInit(sim);
+        KeyPair keyPair = TestHelper.createKeyPairRsa();
 
-        // check card number
-        byte[] data1 = new byte[]{0, 4};
-        ResponseAPDU r1 = TestHelper.createAndSendCommand(sim, cla, (byte) 0, p1, p2, data1);
+        byte[] aesKeyBuffer = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
 
-        short cardNumber = Util.getShort(r1.getData(), (short) 1);
-        assertEquals("Incorrect r1 cla", cla, r1.getData()[0]);
-        assertEquals("Incorrect r1 card number", 4, cardNumber);
-        assertEquals("Incorrect r1 data size", 3, r1.getData().length);
+        /////////////////////////////////////////////////////
+
+        byte[] buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 11); //nonce
+        TestHelper.writePkRsa((RSAPublicKey) keyPair.getPublic(), buffer, (short) 2);
+
+        // check pkKeyTerminal number
+        ResponseAPDU r1 = TestHelper.createAndSendCommand(sim, cla, (byte) 0, p1, p2, buffer);
+
+        byte[] respData = TestHelper.decryptRsa(keyPair.getPrivate(), r1.getData());
+        short nonce = Util.getShort(respData, (short) 1);
+        short cardNumber = Util.getShort(respData, (short) 3);
+
+        assertEquals("Incorrect r1 cla", cla, respData[0]);
+        assertEquals("Incorrect r1 nonce", 11, nonce);
+        assertEquals("Incorrect r1 card number", 1, cardNumber);
         assertEquals("Incorrect r1 SW", 36864, r1.getSW());
 
+        // set AES key
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 12); //nonce
+        Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 0, (short) 16); //aesKey
+
+        short length = TestHelper.encryptRsa(buffer, (short) 4, cardPk);
+        ResponseAPDU r2 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
+
+        respData = TestHelper.decryptRsa(keyPair.getPrivate(), r2.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r2 cla", cla, respData[0]);
+        assertEquals("Incorrect r2 nonce", 12, nonce);
+        assertEquals("Incorrect r2 SW", 36864, r2.getSW());
+
         // check incorrect pin
-        byte[] data2 = new byte[]{0, 0};
-        Util.setShort(data2, (short) 0, (short) 4);
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 13); //nonce
+        Util.setShort(buffer, (short) 2, (short) 4); //pin
 
         // First incorrect pin
-        ResponseAPDU r2 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, data2);
+        TestHelper.encryptAes(buffer, (short) 4, cardPk);
+        ResponseAPDU r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
-        assertEquals("Incorrect r2 cla", cla, r2.getData()[0]);
-        assertEquals("Incorrect r2 status code", -1, r2.getData()[1]);
-        assertEquals("Incorrect r2 data size", 2, r2.getData().length);
+        respData = TestHelper.decryptRsa(keyPair.getPrivate(), r3.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r3 cla", cla, respData[0]);
+        assertEquals("Incorrect r3 nonce", 13, nonce);
+        assertEquals("Incorrect r3 status code", -1, r2.getData()[3]);
+        assertEquals("Incorrect r3 SW", 36864, r2.getSW());
 
         // Second incorrect pin
-        r2 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, data2);
+        TestHelper.encryptAes(buffer, (short) 4, cardPk);
+        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
-        assertEquals("Incorrect r2 cla", cla, r2.getData()[0]);
-        assertEquals("Incorrect r2 status code", -1, r2.getData()[1]);
-        assertEquals("Incorrect r2 data size", 2, r2.getData().length);
+        respData = TestHelper.decryptRsa(keyPair.getPrivate(), r3.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r3 cla", cla, respData[0]);
+        assertEquals("Incorrect r3 nonce", 13, nonce);
+        assertEquals("Incorrect r3 status code", -1, r2.getData()[3]);
+        assertEquals("Incorrect r3 SW", 36864, r2.getSW());
 
         // Third incorrect pin
-        r2 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, data2);
+        TestHelper.encryptAes(buffer, (short) 4, cardPk);
+        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
-        assertEquals("Incorrect r2 cla", cla, r2.getData()[0]);
-        assertEquals("Incorrect r2 status code", -1, r2.getData()[1]);
-        assertEquals("Incorrect r2 data size", 2, r2.getData().length);
+        respData = TestHelper.decryptRsa(keyPair.getPrivate(), r3.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r3 cla", cla, respData[0]);
+        assertEquals("Incorrect r3 nonce", 13, nonce);
+        assertEquals("Incorrect r3 status code", -1, r2.getData()[3]);
+        assertEquals("Incorrect r3 SW", 36864, r2.getSW());
+
+
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 16); //nonce
+        Util.setShort(buffer, (short) 2, (short) 0); //pin
 
         byte[] data3 = new byte[]{0, 0};
         Util.setShort(data3, (short) 0, (short) 0);
 
         // Even correct pin should fail
-        ResponseAPDU r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, data3);
+        TestHelper.encryptAes(buffer, (short) 4, cardPk);
+        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
         assertEquals("Incorrect r3 cla", cla, r3.getData()[0]);
         assertEquals("Incorrect r3 status code", -1, r3.getData()[1]);
