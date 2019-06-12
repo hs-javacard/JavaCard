@@ -83,14 +83,14 @@ class TestHelper {
         return buffer;
     }
 
-    static short encryptRsa(byte[] buffer, short msgSize, Key key) {
+    static short encryptRsa(Key key, byte[] buffer, short msgSize) {
         byte[] decryptBuffer = new byte[255];
-
         Util.arrayCopy(buffer, (short) 0, decryptBuffer, (short) 0, msgSize);
+
         Cipher rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
         rsaCipher.init(key, Cipher.MODE_ENCRYPT);
 
-        return rsaCipher.doFinal(decryptBuffer, (short) 0, (short) msgSize, buffer, (short) 0);
+        return rsaCipher.doFinal(decryptBuffer, (short) 0, msgSize, buffer, (short) 0);
     }
 
     static byte[] decryptRsa(PrivateKey key, byte[] buffer) {
@@ -103,36 +103,55 @@ class TestHelper {
         return decryptBuffer;
     }
 
-    static byte[] decryptAes(AESKey key, byte[] buffer) {
-        byte[] decryptBuffer = new byte[32];
+    static AESKey createKeyAes() {
+        AESKey aesKey = (AESKey) KeyBuilder.buildKey(KeyBuilder.TYPE_AES, KeyBuilder.LENGTH_AES_128, false);
+        aesKey.setKey(keyBufferAes(), (short) 0);
+
+        return aesKey;
+    }
+
+    static byte[] keyBufferAes() {
+        return new byte[]{0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
+    }
+
+    static byte[] encryptAes(AESKey key, byte[] buffer, short msgLength) {
         byte[] ivdata = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-        short msgSize = Util.getShort(buffer, (short) 0);
-        short blocks = getBlockSize(msgSize);
-        short encSize = (short) (blocks * 16);
+        RandomData random = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
+        random.generateData(ivdata, (short) 0, (short) 16);
 
+        short encLength = (short) (getBlockSize((short) (msgLength + 2)) * 16);
+
+        byte[] encryptBuffer = new byte[encLength];
+        byte[] encTarget = new byte[encLength + 2 + 16];
+
+        Util.setShort(encryptBuffer, (short) 0, msgLength);
+        Util.arrayCopy(buffer, (short) 0, encryptBuffer, (short) 2, msgLength);
+
+        Cipher aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
+        aesCipher.init(key, Cipher.MODE_ENCRYPT, ivdata, (short) 0, (short) 16);
+        aesCipher.doFinal(encryptBuffer, (short) 0, encLength, encTarget, (short) 2);
+
+        Util.setShort(encTarget, (short) 0, encLength);
+        Util.arrayCopy(ivdata, (short) 0, encTarget, (short) (encLength + 2), (short) ivdata.length);
+
+        return encTarget;
+    }
+
+    static byte[] decryptAes(AESKey key, byte[] buffer) {
+        byte[] ivdata = new byte[16];
+        byte[] decryptBuffer = new byte[250];
+
+        short encSize = Util.getShort(buffer, (short) 0);
+
+        Util.arrayCopy(buffer, (short) 2, decryptBuffer, (short) 0, encSize);
         Util.arrayCopy(buffer, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
 
         Cipher aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         aesCipher.init(key, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
-        aesCipher.doFinal(buffer, (short) 2, encSize, decryptBuffer, (short) 0);
+        aesCipher.doFinal(decryptBuffer, (short) 0, encSize, buffer, (short) 0);
 
-        return decryptBuffer;
-    }
-
-
-    static void decryptAes(APDU apdu) {
-        byte[] buffer = apdu.getBuffer();
-
-        short msgSize = Util.getShort(buffer, (short) 0);
-        short blocks = getBlockSize(msgSize);
-        short encSize = (short) (blocks * 16);
-
-        Util.arrayCopy(buffer, (short) 2, aesWorkspace, (short) 0, encSize);
-        Util.arrayCopy(buffer, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
-
-        aesCipher.init(aesKey, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
-        aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 0);
+        return buffer;
     }
 
     private static short getBlockSize(short msgSize) {

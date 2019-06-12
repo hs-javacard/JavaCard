@@ -11,6 +11,11 @@ import org.junit.Test;
 import javax.smartcardio.CommandAPDU;
 import javax.smartcardio.ResponseAPDU;
 
+import java.util.Arrays;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 public class AesTest {
 
     @Test
@@ -38,23 +43,64 @@ public class AesTest {
         sharedKey.setKey(theKey, (short) 0);
 
         short len = Util.getShort(responsedata, (short) 0);
-        short blocks = (short) (len / 16);
-        if ((len % 16) > 0) {
-            blocks++;
-        }
-        short encSize = (short) (blocks * 16);
+//        short blocks = (short) (len / 16);
+//        if ((len % 16) > 0) {
+//            blocks++;
+//        }
+//        short encSize = (short) (blocks * 16);
 
-        Util.arrayCopy(responsedata, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
+        Util.arrayCopy(responsedata, (short) (len + 2), ivdata, (short) 0, (short) 16);
 
         aesCipher.init(sharedKey, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
 
-        aesCipher.doFinal(responsedata, (short) 2, (short) encSize, plaintext, (short) 0);
+        aesCipher.doFinal(responsedata, (short) 2, (short) len, plaintext, (short) 0);
         System.out.println(new String(plaintext));
+        short msglen = Util.getShort(plaintext, (short) 0);
+        System.out.println("msglen is " + msglen);
 //        byte statusC = r7.getData()[1];
 
 //        if (!isRSAKeyInitialized) {
 //            ISOException.throwIt(ISO7816.SW_CONDITIONS_NOT_SATISFIED);
 //        }
+
+    }
+
+    private short getBlockSize(short msgSize) {
+        short blocks = (short) (msgSize / 16);
+        if ((msgSize % 16) > 0)
+            blocks++;
+
+        return blocks;
+    }
+
+    @Test
+    public void AESDecryptOnCard() {
+        JavaxSmartCardInterface sim = TestHelper.createInterface();
+
+        byte cla = 102;
+        byte p1 = 0;
+        byte p2 = 0;
+
+        byte[] theKey = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
+
+        //byte[] plaintext = new byte[32];
+        AESKey sharedKey = (AESKey) KeyBuilder.buildKey(KeyBuilder.TYPE_AES, KeyBuilder.LENGTH_AES_128, false);
+        sharedKey.setKey(theKey, (short) 0);
+
+        byte[] myPlaintext = "Het geheime bericht is HENK!".getBytes();
+        byte[] encTarget = TestHelper.encryptAes(sharedKey, myPlaintext, (short) 12);
+
+        CommandAPDU c8 = new CommandAPDU(cla, 0, p1, p2, encTarget, 2);
+        ResponseAPDU r8 = sim.transmitCommand(c8);
+        byte[] responsedata = r8.getData();
+
+        short recLen = Util.getShort(responsedata, (short) 0);
+        byte[] recmsg = new byte[recLen];
+        Util.arrayCopy(responsedata, (short) 2, recmsg, (short) 0, recLen);
+
+        assertEquals("Sent and received msg length", recLen, myPlaintext.length);
+        //assertEquals("Incorrect r1 SW", myPlaintext, recmsg);
+        assertArrayEquals(myPlaintext, recmsg);
 
     }
 
