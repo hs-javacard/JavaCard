@@ -70,13 +70,12 @@ public class EPApplet extends Applet implements ISO7816 {
 
         random = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
 
-        pkTerminal = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, true);
+        pkTerminal = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, false);
         aesKey = (AESKey) KeyBuilder.buildKey(KeyBuilder.TYPE_AES, KeyBuilder.LENGTH_AES_128, false);
 
         register();
     }
 
-    @Override
     public boolean select() {
         resetCounters();
         return true;
@@ -310,7 +309,7 @@ public class EPApplet extends Applet implements ISO7816 {
             statusCode = -2;
             insCounter++;
 
-        } else if (paymentAmount + totalToday > hardLimit) {
+        } else if ((short) (paymentAmount + totalToday) > hardLimit) {
             statusCode = -3;
             resetCounters();
 
