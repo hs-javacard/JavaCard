@@ -62,7 +62,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
         aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
-        pkTerminal = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, true);
+        pkTerminal = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, false);
 
         buffer1 = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
 
@@ -84,7 +84,7 @@ public class EPApplet extends Applet implements ISO7816 {
         register();
     }
 
-    @Override
+
     public boolean select() {
         resetCounters();
         return true;
@@ -126,7 +126,7 @@ public class EPApplet extends Applet implements ISO7816 {
                 break;
             case 101:
 
-                Util.arrayCopy("Henk!".getBytes(), (short) 0, buffer, (short) 0, (short) 5);
+                Util.arrayCopy(new byte[]{1,2,3}, (short) 0, buffer, (short) 0, (short) 5);
 
                 short encSize = encryptAes(apdu, (short) 5);
                 sendResponse(apdu, encSize);
@@ -318,7 +318,7 @@ public class EPApplet extends Applet implements ISO7816 {
             statusCode = -2;
             insCounter++;
 
-        } else if (paymentAmount + totalToday > hardLimit) {
+        } else if ((short) (paymentAmount + totalToday) > hardLimit) {
             statusCode = -3;
             resetCounters();
 
@@ -402,7 +402,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
         insCounter++;
 
-        Util.arrayCopy("Henk2".getBytes(), (short) 0, buffer, (short) 0, (short) 5);
+        Util.arrayCopy(new byte[]{0, 9}, (short) 0, buffer, (short) 0, (short) 5);
 //        buffer[0] = claCounter;
 //        Util.setShort(buffer, (short) 1, nonce);
 //        Util.setShort(buffer, (short) 3, cardNumber);
