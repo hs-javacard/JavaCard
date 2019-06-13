@@ -23,7 +23,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
     private RandomData random;
 
-    private byte[] ivdata;
+    private byte[] ivData;
     private byte[] aesKeyBuffer = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
 
     private short cardNumber;
@@ -64,7 +64,7 @@ public class EPApplet extends Applet implements ISO7816 {
         rsaWorkspace = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
         aesWorkspace = JCSystem.makeTransientByteArray((short) 256, JCSystem.CLEAR_ON_DESELECT);
 
-        ivdata = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
+        ivData = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
 //        aesKeyBuffer = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
 //        aesKeyBuffer = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
 
@@ -112,22 +112,6 @@ public class EPApplet extends Applet implements ISO7816 {
                 break;
             case 3: // Deposit, so balance increase
                 deposit(apdu);
-                break;
-            case 101:
-
-                Util.arrayCopy("Henk!".getBytes(), (short) 0, buffer, (short) 0, (short) 5);
-
-                short encSize = encryptAes(apdu, (short) 5);
-                sendResponse(apdu, encSize);
-                break;
-
-            case 102:
-                // get encrypted message, blocksize + {msgsize + msg}sk
-                decryptAes(apdu);
-                short len = Util.getShort(buffer, (short) 0);
-//                short a = 0;
-                sendResponse(apdu, (short) (len + 2));
-                // return plain text for now
                 break;
             default:
                 ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
@@ -210,13 +194,17 @@ public class EPApplet extends Applet implements ISO7816 {
 
     private void changePin(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
+        checkNonce(buffer);
 
-        pin.update(buffer, OFFSET_CDATA, (byte) 2);
+        pin.update(buffer, (short) 2, (byte) 2);
+
+        buffer[0] = claCounter;
+        buffer[3] = 1; // status code
+        Util.setShort(buffer, (short) 1, nonce);
+
         resetCounters();
 
-        buffer[1] = 1; // set status code
-
-        short length = encryptAes(apdu, (short) 2);
+        short length = encryptAes(apdu, (short) 4);
         sendResponse(apdu, length);
     }
 
@@ -249,9 +237,11 @@ public class EPApplet extends Applet implements ISO7816 {
 
     private void changeSoftLimit(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
-        byte statusCode;
+        checkNonce(buffer);
 
-        short newSoftLimit = Util.getShort(buffer, OFFSET_CDATA);
+        byte statusCode;
+        short newSoftLimit = Util.getShort(buffer, (short) 2);
+
         if (newSoftLimit > hardLimit) {
             statusCode = -1;
         } else {
@@ -259,10 +249,14 @@ public class EPApplet extends Applet implements ISO7816 {
             softLimit = newSoftLimit;
         }
 
-        buffer[1] = statusCode; // set status code
-        Util.setShort(buffer, (short) 2, softLimit);
+        buffer[0] = claCounter;
+        buffer[3] = statusCode;
+        Util.setShort(buffer, (short) 1, nonce);
+        Util.setShort(buffer, (short) 4, softLimit);
 
-        short length = encryptAes(apdu, (short) 4);
+        resetCounters();
+
+        short length = encryptAes(apdu, (short) 6);
         sendResponse(apdu, length);
     }
 
@@ -300,11 +294,12 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
 
-        paymentAmount = Util.getShort(buffer, OFFSET_CDATA);
-        short dayNumber = Util.getShort(buffer, (short) (OFFSET_CDATA + 2));
+        paymentAmount = Util.getShort(buffer, (short) 2);
+        short dayNumber = Util.getShort(buffer, (short) 4);
         if (this.dayNumber != dayNumber)
             totalToday = 0;
 
+        buffer[0] = claCounter;
         byte statusCode;
 
         if (balance < paymentAmount) {
@@ -326,19 +321,23 @@ public class EPApplet extends Applet implements ISO7816 {
             insCounter += 2;
         }
 
-        buffer[1] = statusCode;
+        buffer[3] = statusCode;
+        Util.setShort(buffer, (short) 1, nonce);
 
-        short length = encryptAes(apdu, (short) 2);
+        short length = encryptAes(apdu, (short) 4);
         sendResponse(apdu, length);
     }
 
     private void decreaseBalance(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
+        checkNonce(buffer);
+
         balance -= paymentAmount;
 
-        resetCounters();
+        buffer[0] = claCounter;
+        Util.setShort(buffer, (short) 1, nonce);
 
-        Util.setShort(buffer, (short) 1, balance);
+        resetCounters();
 
         short length = encryptAes(apdu, (short) 3);
         sendResponse(apdu, length);
@@ -370,14 +369,18 @@ public class EPApplet extends Applet implements ISO7816 {
 
     private void increaseBalance(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
-        short amount = Util.getShort(buffer, OFFSET_CDATA);
+
+        checkNonce(buffer);
+        short amount = Util.getShort(buffer, (short) 2);
         balance += amount;
+
+        buffer[0] = claCounter;
+        Util.setShort(buffer, (short) 1, nonce);
+        Util.setShort(buffer, (short) 3, balance);
 
         resetCounters();
 
-        Util.setShort(buffer, (short) 1, balance);
-
-        short length = encryptAes(apdu, (short) 3);
+        short length = encryptAes(apdu, (short) 5);
         sendResponse(apdu, length);
     }
 
@@ -398,22 +401,6 @@ public class EPApplet extends Applet implements ISO7816 {
         sendResponse(apdu, length);
     }
 
-//    public void retrievePkTAndSendCardNumber(APDU apdu) {
-//        byte[] buffer = apdu.getBuffer();
-////        nonce = Util.getShort(buffer, OFFSET_CDATA);
-//        KeyHelper.init(pkTerminal, buffer, (short) (OFFSET_CDATA + 0));
-//
-//        insCounter++;
-//
-//        Util.arrayCopy("Henk2".getBytes(), (short) 0, buffer, (short) 0, (short) 5);
-////        buffer[0] = claCounter;
-////        Util.setShort(buffer, (short) 1, nonce);
-////        Util.setShort(buffer, (short) 3, cardNumber);
-//
-//        short length = encryptRsa(apdu, (short) 5, pkTerminal);
-//        sendResponse(apdu, (short) length);
-//    }
-
     private void retrieveSymmetricKey(APDU apdu) {
         byte[] buffer = decryptRsa(apdu);
 
@@ -430,7 +417,7 @@ public class EPApplet extends Applet implements ISO7816 {
     }
 
     private void initSymmetricKey(byte[] buffer) {
-        Util.arrayCopy(buffer, (short) 0, aesKeyBuffer, (short) 0, (short) 16);
+        Util.arrayCopy(buffer, (short) 2, aesKeyBuffer, (short) 0, (short) 16);
         aesKey.setKey(aesKeyBuffer, (short) 0);
     }
 
@@ -438,7 +425,7 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
 
-        boolean correctPin = pin.check(buffer, (short) (OFFSET_CDATA + 2), (byte) 2);
+        boolean correctPin = pin.check(buffer, (short) 2, (byte) 2);
         byte statusCode;
 
         if (correctPin) {
@@ -454,13 +441,12 @@ public class EPApplet extends Applet implements ISO7816 {
         buffer[3] = statusCode;
         Util.setShort(buffer, (short) 1, nonce);
 
-        //ENCRYPT HERE
         short length = encryptAes(apdu, (short) 4);
         sendResponse(apdu, length);
     }
 
     private void checkNonce(byte[] buffer) {
-        short nonce = Util.getShort(buffer, OFFSET_CDATA);
+        short nonce = Util.getShort(buffer, (short) 0);
         if (this.nonce == nonce) {
             ISOException.throwIt(SW_COMMAND_NOT_ALLOWED);
         } else {
@@ -489,6 +475,14 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="RSA">
 
+    private short encryptRsa(APDU apdu, short msgSize, Key key) {
+        byte[] buffer = apdu.getBuffer();
+        Util.arrayCopy(buffer, (short) 0, rsaWorkspace, (short) 0, msgSize);
+
+        rsaCipher.init(key, Cipher.MODE_ENCRYPT);
+        return rsaCipher.doFinal(rsaWorkspace, (short) 0, msgSize, buffer, (short) 0);
+    }
+
     private byte[] decryptRsa(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         Util.arrayCopy(buffer, (short) OFFSET_CDATA, rsaWorkspace, (short) 0, (short) 128);
@@ -500,14 +494,6 @@ public class EPApplet extends Applet implements ISO7816 {
         return buffer;
     }
 
-    private short encryptRsa(APDU apdu, short msgSize, Key key) {
-        byte[] buffer = apdu.getBuffer();
-        Util.arrayCopy(buffer, (short) 0, rsaWorkspace, (short) 0, msgSize);
-
-        rsaCipher.init(key, Cipher.MODE_ENCRYPT);
-        return rsaCipher.doFinal(rsaWorkspace, (short) 0, msgSize, buffer, (short) 0);
-    }
-
     //</editor-fold>
 
     //<editor-fold desc="AES">
@@ -515,26 +501,20 @@ public class EPApplet extends Applet implements ISO7816 {
     private short encryptAes(APDU apdu, short msgSize) {
         byte[] buffer = apdu.getBuffer();
 
-        Util.arrayCopy(buffer, (short) 0, aesWorkspace, (short) 2, msgSize);
-
-        short blocks = getBlockSize((short) (msgSize + 2));
-        short encSize = (short) (blocks * 16);
+        short encSize = (short) (getBlockSize(msgSize) * 16);
         short paddingSize = (short) (encSize - msgSize);
 
-        Util.arrayFillNonAtomic(aesWorkspace, (short) (msgSize + 2), paddingSize, (byte) 3);
-        Util.setShort(aesWorkspace, (short) 0, msgSize);
-        // generate IV
-        random.generateData(ivdata, (short) 0, (short) 16);
+        Util.arrayFillNonAtomic(aesWorkspace, msgSize, paddingSize, (byte) 3);
+        Util.arrayCopy(buffer, (short) 0, aesWorkspace, (short) 0, msgSize);
 
-        aesKey.setKey(aesKeyBuffer, (short) 0); // Should be done after receiving
+        random.generateData(ivData, (short) 0, (short) 16);
 
-        aesCipher.init(aesKey, Cipher.MODE_ENCRYPT, ivdata, (short) 0, (short) 16);
+        Cipher aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
+        aesCipher.init(aesKey, Cipher.MODE_ENCRYPT, ivData, (short) 0, (short) 16);
         aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 2);
 
-        short offset = 16 + 2;
-
-        Util.arrayCopy(ivdata, (short) 0, buffer, offset, (short) 16);
         Util.setShort(buffer, (short) 0, encSize);
+        Util.arrayCopy(ivData, (short) 0, buffer, (short) (encSize + 2), (short) ivData.length);
 
         return (short) (encSize + 2 + 16);
     }
@@ -545,10 +525,10 @@ public class EPApplet extends Applet implements ISO7816 {
         short encSize = Util.getShort(buffer, (short) OFFSET_CDATA);
 
         Util.arrayCopy(buffer, (short) (OFFSET_CDATA + 2), aesWorkspace, (short) 0, encSize);
-        Util.arrayCopy(buffer, (short) (OFFSET_CDATA + encSize + 2), ivdata, (short) 0, (short) 16);
+        Util.arrayCopy(buffer, (short) (OFFSET_CDATA + encSize + 2), ivData, (short) 0, (short) 16);
 
         aesKey.setKey(aesKeyBuffer, (short) 0);
-        aesCipher.init(aesKey, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
+        aesCipher.init(aesKey, Cipher.MODE_DECRYPT, ivData, (short) 0, (short) 16);
         aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 0);
 
         return buffer;

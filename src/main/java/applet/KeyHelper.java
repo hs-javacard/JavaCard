@@ -3,9 +3,9 @@ package applet;
 import javacard.framework.Util;
 import javacard.security.RSAPublicKey;
 
-public class KeyHelper {
+class KeyHelper {
 
-    public static void init(RSAPublicKey key, byte[] buffer, short offset) {
+    static void init(RSAPublicKey key, byte[] buffer, short offset) {
         short expSize = Util.getShort(buffer, offset);
         short modSize = Util.getShort(buffer, (short) (offset + 2));
 

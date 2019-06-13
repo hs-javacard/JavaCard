@@ -2,7 +2,6 @@ package applet;
 
 import com.licel.jcardsim.io.JavaxSmartCardInterface;
 import javacard.framework.AID;
-import javacard.framework.APDU;
 import javacard.framework.Util;
 import javacard.security.*;
 import javacardx.crypto.Cipher;
@@ -10,8 +9,6 @@ import org.bouncycastle.util.encoders.Hex;
 
 import javax.smartcardio.CommandAPDU;
 import javax.smartcardio.ResponseAPDU;
-
-import static org.junit.Assert.assertEquals;
 
 class TestHelper {
 
@@ -39,10 +36,10 @@ class TestHelper {
         byte[] data1 = new byte[14];
 
         Util.setShort(data1, (short) 0, (short) 1); // cardNumber
-        Util.setShort(data1, (short) 2, (short) 2); // balance
+        Util.setShort(data1, (short) 2, (short) 20); // balance
         Util.setShort(data1, (short) 4, (short) 3); // pin
-        Util.setShort(data1, (short) 6, (short) 4); // softLimit
-        Util.setShort(data1, (short) 8, (short) 5); // hardLimit
+        Util.setShort(data1, (short) 6, (short) 5); // softLimit
+        Util.setShort(data1, (short) 8, (short) 30); // hardLimit
 
         ResponseAPDU r = TestHelper.createAndSendCommand(sim, cla, (byte) 0, p1, p2, data1);
 
@@ -52,18 +49,51 @@ class TestHelper {
         return key;
     }
 
-    static void runAuth(JavaxSmartCardInterface sim, byte cla) {
+    static AESKey runAuth(JavaxSmartCardInterface sim, byte cla) {
         byte p1 = 0;
         byte p2 = 0;
 
-        // check card number
-        byte[] data1 = new byte[]{0, 4};
-        TestHelper.createAndSendCommand(sim, cla, (byte) 0, p1, p2, data1);
+        AESKey aesKey = runAuthNoPin(sim, cla);
 
-        // check pin
-        byte[] data2 = new byte[]{0, 0};
-        Util.setShort(data2, (short) 0, (short) 0);
-        TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, data2);
+        // Correct pin
+        byte[] buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 13); //nonce
+        Util.setShort(buffer, (short) 2, (short) 3); //pin
+
+        encryptAes(aesKey, buffer, (short) 4);
+        createAndSendCommand(sim, cla, (byte) 2, p1, p2, buffer);
+
+        return aesKey;
+    }
+
+    static AESKey runAuthNoPin(JavaxSmartCardInterface sim, byte cla) {
+        byte p1 = 0;
+        byte p2 = 0;
+
+        RSAPublicKey cardPk = runInit(sim);
+        KeyPair keyPair = createKeyPairRsa();
+
+        byte[] aesKeyBuffer = keyBufferAes();
+        AESKey aesKey = createKeyAes();
+
+        /////////////////////////////////////////////////////
+
+        byte[] buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 11); //nonce
+        writePkRsa((RSAPublicKey) keyPair.getPublic(), buffer, (short) 2);
+
+        // check pkKeyTerminal number
+        createAndSendCommand(sim, cla, (byte) 0, p1, p2, buffer);
+
+        // set AES key
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 12); //nonce
+        Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 2, (short) 16); //aesKey
+
+        encryptRsa(cardPk, buffer, (short) 18);
+        createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
+
+        return aesKey;
     }
 
     static KeyPair createKeyPairRsa() {
@@ -77,7 +107,7 @@ class TestHelper {
         short expSize = pb.getExponent(buffer, (short) (offset + 4));
         short modSize = pb.getModulus(buffer, (short) (offset + expSize + 4));
 
-        Util.setShort(buffer, (short) offset, expSize);
+        Util.setShort(buffer, offset, expSize);
         Util.setShort(buffer, (short) (offset + 2), modSize);
 
         return buffer;
@@ -114,41 +144,37 @@ class TestHelper {
         return new byte[]{0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
     }
 
-    static byte[] encryptAes(AESKey key, byte[] buffer, short msgLength) {
-        byte[] ivdata = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    static void encryptAes(AESKey key, byte[] buffer, short msgLength) {
+        byte[] ivData = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
         RandomData random = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
-        random.generateData(ivdata, (short) 0, (short) 16);
+        random.generateData(ivData, (short) 0, (short) 16);
 
-        short encLength = (short) (getBlockSize((short) (msgLength + 2)) * 16);
+        short encLength = (short) (getBlockSize(msgLength) * 16);
 
         byte[] encryptBuffer = new byte[encLength];
-        byte[] encTarget = new byte[encLength + 2 + 16];
 
-        Util.setShort(encryptBuffer, (short) 0, msgLength);
-        Util.arrayCopy(buffer, (short) 0, encryptBuffer, (short) 2, msgLength);
+        Util.arrayCopy(buffer, (short) 0, encryptBuffer, (short) 0, msgLength);
 
         Cipher aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
-        aesCipher.init(key, Cipher.MODE_ENCRYPT, ivdata, (short) 0, (short) 16);
-        aesCipher.doFinal(encryptBuffer, (short) 0, encLength, encTarget, (short) 2);
+        aesCipher.init(key, Cipher.MODE_ENCRYPT, ivData, (short) 0, (short) 16);
+        aesCipher.doFinal(encryptBuffer, (short) 0, encLength, buffer, (short) 2);
 
-        Util.setShort(encTarget, (short) 0, encLength);
-        Util.arrayCopy(ivdata, (short) 0, encTarget, (short) (encLength + 2), (short) ivdata.length);
-
-        return encTarget;
+        Util.setShort(buffer, (short) 0, encLength);
+        Util.arrayCopy(ivData, (short) 0, buffer, (short) (encLength + 2), (short) ivData.length);
     }
 
     static byte[] decryptAes(AESKey key, byte[] buffer) {
-        byte[] ivdata = new byte[16];
+        byte[] ivData = new byte[16];
         byte[] decryptBuffer = new byte[250];
 
         short encSize = Util.getShort(buffer, (short) 0);
 
         Util.arrayCopy(buffer, (short) 2, decryptBuffer, (short) 0, encSize);
-        Util.arrayCopy(buffer, (short) (encSize + 2), ivdata, (short) 0, (short) 16);
+        Util.arrayCopy(buffer, (short) (encSize + 2), ivData, (short) 0, (short) 16);
 
         Cipher aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
-        aesCipher.init(key, Cipher.MODE_DECRYPT, ivdata, (short) 0, (short) 16);
+        aesCipher.init(key, Cipher.MODE_DECRYPT, ivData, (short) 0, (short) 16);
         aesCipher.doFinal(decryptBuffer, (short) 0, encSize, buffer, (short) 0);
 
         return buffer;
@@ -160,6 +186,10 @@ class TestHelper {
             blocks++;
 
         return blocks;
+    }
+
+    static int hexToDecimal(int hex) {
+        return Integer.parseInt(String.valueOf(hex), 10);
     }
 
 }

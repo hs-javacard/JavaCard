@@ -61,66 +61,69 @@ public class AuthTest {
         assertEquals("Incorrect r2 nonce", 12, nonce);
         assertEquals("Incorrect r2 SW", 36864, r2.getSW());
 
-//        // check incorrect pin
-//        buffer = new byte[255];
-//        Util.setShort(buffer, (short) 0, (short) 13); //nonce
-//        Util.setShort(buffer, (short) 2, (short) 4); //pin
-//
-//        // First incorrect pin
-//        TestHelper.encryptAes(aesKey, buffer, (short) 4);
-//        ResponseAPDU r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
-//
-//        respData = TestHelper.decryptAes(aesKey, r3.getData());
-//        nonce = Util.getShort(respData, (short) 1);
-//
-//        assertEquals("Incorrect r3 cla", cla, respData[0]);
-//        assertEquals("Incorrect r3 nonce", 13, nonce);
-//        assertEquals("Incorrect r3 status code", -1, r2.getData()[3]);
-//        assertEquals("Incorrect r3 SW", 36864, r2.getSW());
-//
-//        // Second incorrect pin
-//        TestHelper.encryptAes(aesKey, buffer, (short) 4);
-//        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
-//
-//        respData = TestHelper.decryptAes(aesKey, r3.getData());
-//        nonce = Util.getShort(respData, (short) 1);
-//
-//        assertEquals("Incorrect r3 cla", cla, respData[0]);
-//        assertEquals("Incorrect r3 nonce", 14, nonce);
-//        assertEquals("Incorrect r3 status code", -1, r2.getData()[3]);
-//        assertEquals("Incorrect r3 SW", 36864, r2.getSW());
-//
-//        // Third incorrect pin
-//        TestHelper.encryptAes(aesKey, buffer, (short) 4);
-//        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
-//
-//        respData = TestHelper.decryptAes(aesKey, r3.getData());
-//        nonce = Util.getShort(respData, (short) 1);
-//
-//        assertEquals("Incorrect r3 cla", cla, respData[0]);
-//        assertEquals("Incorrect r3 nonce", 15, nonce);
-//        assertEquals("Incorrect r3 status code", -1, r2.getData()[3]);
-//        assertEquals("Incorrect r3 SW", 36864, r2.getSW());
-//
-//        buffer = new byte[255];
-//        Util.setShort(buffer, (short) 0, (short) 16); //nonce
-//        Util.setShort(buffer, (short) 2, (short) 0); //pin
-//
-//        byte[] data3 = new byte[]{0, 0};
-//        Util.setShort(data3, (short) 0, (short) 0);
-//
-//        // Even correct pin should fail
-//        TestHelper.encryptAes(aesKey, buffer, (short) 4);
-//        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
-//
-//        respData = TestHelper.decryptAes(aesKey, r3.getData());
-//        nonce = Util.getShort(respData, (short) 1);
-//
-//        assertEquals("Incorrect r3 cla", cla, respData[0]);
-//        assertEquals("Incorrect r3 nonce", 16, nonce);
-//        assertEquals("Incorrect r3 status code", -1, respData[1]);
-//        assertEquals("Incorrect r3 data size", 2, respData.length);
+        // First incorrect pin
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 13); //nonce
+        Util.setShort(buffer, (short) 2, (short) 4); //pin
 
+        TestHelper.encryptAes(aesKey, buffer, (short) 4);
+        ResponseAPDU r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 2, p1, p2, buffer);
+
+        respData = TestHelper.decryptAes(aesKey, r3.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r3 cla", cla, respData[0]);
+        assertEquals("Incorrect r3 nonce", 13, nonce);
+        assertEquals("Incorrect r3 status code", -1, respData[3]);
+        assertEquals("Incorrect r3 SW", 36864, r3.getSW());
+
+        // Second incorrect pin
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 14); //nonce
+        Util.setShort(buffer, (short) 2, (short) 4); //pin
+
+        TestHelper.encryptAes(aesKey, buffer, (short) 4);
+        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 2, p1, p2, buffer);
+
+        respData = TestHelper.decryptAes(aesKey, r3.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r3 cla", cla, respData[0]);
+        assertEquals("Incorrect r3 nonce", 14, nonce);
+        assertEquals("Incorrect r3 status code", -1, respData[3]);
+        assertEquals("Incorrect r3 SW", 36864, r3.getSW());
+
+        // Third incorrect pin
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 15); //nonce
+        Util.setShort(buffer, (short) 2, (short) 4); //pin
+
+        TestHelper.encryptAes(aesKey, buffer, (short) 4);
+        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 2, p1, p2, buffer);
+
+        respData = TestHelper.decryptAes(aesKey, r3.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r3 cla", cla, respData[0]);
+        assertEquals("Incorrect r3 nonce", 15, nonce);
+        assertEquals("Incorrect r3 status code", -1, respData[3]);
+        assertEquals("Incorrect r3 SW", 36864, r3.getSW());
+
+        // Even correct pin should fail
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, (short) 16); //nonce
+        Util.setShort(buffer, (short) 2, (short) 3); //pin
+
+        TestHelper.encryptAes(aesKey, buffer, (short) 4);
+        r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 2, p1, p2, buffer);
+
+        respData = TestHelper.decryptAes(aesKey, r3.getData());
+        nonce = Util.getShort(respData, (short) 1);
+
+        assertEquals("Incorrect r3 cla", cla, respData[0]);
+        assertEquals("Incorrect r3 nonce", 16, nonce);
+        assertEquals("Incorrect r3 status code", -1, respData[3]);
+        assertEquals("Incorrect r3 SW", 36864, r3.getSW());
     }
 
 }
