@@ -20,7 +20,7 @@ bin/javacard/applet.cap: bin/EPApplet.class
 	
 bin/EPApplet.class: src/main/java/applet/EPApplet.java
 	#Compiling EPApplet
-	javac -source 1.3 -target 1.1 -d bin -cp ${JC_PATH} src/main/java/applet/EPApplet.java src/main/java/applet/KeyHelper.java
+	javac -source 1.3 -target 1.1 -d bin -cp ${JC_PATH} src/main/java/applet/EPApplet.java src/main/java/applet/KeyHelper.java src/main/java/applet/Log.java
 
 clean:
 	rm -rf bin/*
