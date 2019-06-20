@@ -4,6 +4,9 @@ import javacard.framework.*;
 import javacard.security.*;
 import javacardx.crypto.Cipher;
 
+/**
+ * Class representing the Electronic Purse Applet.
+ */
 public class EPApplet extends Applet implements ISO7816 {
 
     private static final byte PIN_TRY_LIMIT = 3;
@@ -43,11 +46,16 @@ public class EPApplet extends Applet implements ISO7816 {
     private byte claCounter;
     private byte insCounter;
 
+    private boolean initialized;
+
     public static void install(byte[] buffer, short offset, byte length)
             throws SystemException {
         new EPApplet();
     }
 
+    /**
+     * Initialize all the transient and non-transient objects which should only be initialized once.
+     */
     public EPApplet() {
 
         try {
@@ -76,20 +84,30 @@ public class EPApplet extends Applet implements ISO7816 {
         register();
     }
 
+    /**
+     * Reset the CLA and INS counters when a card is selected before use at a terminal.
+     *
+     * @return true because the selection will always succeed.
+     */
     public boolean select() {
         resetCounters();
         return true;
     }
 
+    /**
+     * The main function of the Applet. This functions is called by a command-APDU.
+     * The command-APDU is rerouted based on its CLA and INS values.
+     *
+     * @param apdu to process.
+     * @throws ISOException when there is something wrong with the CLA or INS value.
+     */
     public void process(APDU apdu) throws ISOException {
         byte[] buffer = apdu.getBuffer();
         byte cla = buffer[OFFSET_CLA];
         byte ins = buffer[OFFSET_INS];
 
-        if (selectingApplet()) { // we ignore this, it makes ins = -92
-            resetCounters();
+        if (selectingApplet())  // we ignore this, it makes ins = -92
             return;
-        }
 
         if (validCounters(cla, ins)) {
             claCounter = cla;
@@ -122,9 +140,19 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="Initialize">
 
+    /**
+     * Main function of the initialization protocol.
+     *
+     * @param apdu to process.
+     */
     private void initialize(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         byte ins = buffer[OFFSET_INS];
+
+        if (initialized) {
+            ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
+            return;
+        }
 
         switch (ins) {
             case 0:
@@ -134,9 +162,14 @@ public class EPApplet extends Applet implements ISO7816 {
                 ISOException.throwIt(SW_INS_NOT_SUPPORTED);
                 break;
         }
-
     }
 
+    /**
+     * Initialize the EP card with basic information. This can only be done once.
+     * Send a response that contains the cards public key.
+     *
+     * @param apdu to process.
+     */
     private void setInitData(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         byte offset = OFFSET_CDATA;
@@ -150,12 +183,19 @@ public class EPApplet extends Applet implements ISO7816 {
 
         pin.update(buffer, (short) (offset + 4), (byte) 2);
 
+        initialized = true;
+
         JCSystem.commitTransaction();
 
         resetCounters();
         sendPublicKey(apdu);
     }
 
+    /**
+     * Send a response that contains the cards public key.
+     *
+     * @param apdu to process.
+     */
     private void sendPublicKey(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
 
@@ -173,6 +213,11 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="Change PIN">
 
+    /**
+     * Main function of the change-pin protocol.
+     *
+     * @param apdu to process.
+     */
     private void changePinMain(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         byte ins = buffer[OFFSET_INS];
@@ -196,6 +241,12 @@ public class EPApplet extends Applet implements ISO7816 {
         }
     }
 
+    /**
+     * Change the PIN of the card based on the data of the given command-APDU.
+     * Respond with the CLA, the given nonce and a Log confirming the PIN was changed.
+     *
+     * @param apdu to process.
+     */
     private void changePin(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
@@ -221,6 +272,11 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="Change Soft limit">
 
+    /**
+     * Main function of the change-softLimit protocol.
+     *
+     * @param apdu to process.
+     */
     private void changeSoftLimitMain(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         byte ins = buffer[OFFSET_INS];
@@ -244,6 +300,13 @@ public class EPApplet extends Applet implements ISO7816 {
         }
     }
 
+    /**
+     * Change the soft limit of the card based on the data of the given command-APDU. This can only be done
+     * if the new soft limit is less than or equal to the hard limit.
+     * Respond with the CLA, the given nonce, the new soft limit and a Log confirming the soft limit was changed.
+     *
+     * @param apdu to process.
+     */
     private void changeSoftLimit(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
@@ -279,6 +342,11 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="Payment">
 
+    /**
+     * Main function of the payment protocol.
+     *
+     * @param apdu to process.
+     */
     private void payment(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         byte ins = buffer[OFFSET_INS];
@@ -305,6 +373,19 @@ public class EPApplet extends Applet implements ISO7816 {
         }
     }
 
+    /**
+     * Check if a PIN code is needed before a payment can be done.
+     * A status code is returned based on the current situation:
+     * <p>
+     * Balance < amount		 	        = -1    // abort
+     * Amount > softLimit 			    = -2    // require pin
+     * Amount + totalToday > hardLimit	= -3    // abort
+     * Else					            = 1     // no PIN required
+     * <p>
+     * Respond with a the CLA, the given nonce and the status code.
+     *
+     * @param apdu to process.
+     */
     private void checkSoftLimit(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
@@ -357,6 +438,12 @@ public class EPApplet extends Applet implements ISO7816 {
         sendResponse(apdu, length);
     }
 
+    /**
+     * Decrease the balance of the card. A.k.a payment.
+     * Respond with a the CLA, the given nonce and a Log confirming a payment has occurred.
+     *
+     * @param apdu to process.
+     */
     private void decreaseBalance(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
@@ -382,6 +469,11 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="Deposit">
 
+    /**
+     * Main function of the deposit protocol.
+     *
+     * @param apdu to process.
+     */
     private void deposit(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         byte ins = buffer[OFFSET_INS];
@@ -402,6 +494,12 @@ public class EPApplet extends Applet implements ISO7816 {
         }
     }
 
+    /**
+     * Increase the balance based on the amount in the command-APDU.
+     * Respond with a the CLA, the given nonce and a Log confirming a deposit has occurred.
+     *
+     * @param apdu to process.
+     */
     private void increaseBalance(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
 
@@ -427,6 +525,12 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //</editor-fold>
 
+    /**
+     * Retrieve and initialize a public key of the terminal the card is communicating with.
+     * Respond with the CLA, the given nonce, and the card's number.
+     *
+     * @param apdu to process.
+     */
     private void retrievePkTAndSendCardNumber(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         nonce = Util.getShort(buffer, OFFSET_CDATA);
@@ -443,6 +547,12 @@ public class EPApplet extends Applet implements ISO7816 {
         sendResponse(apdu, length);
     }
 
+    /**
+     * Retrieve and initialize the symmetric AES key which will be used encrypt information during the current protocol.
+     * Respond with the CLA and the given nonce.
+     *
+     * @param apdu to process.
+     */
     private void retrieveSymmetricKey(APDU apdu) {
         byte[] buffer = decryptRsa(apdu);
 
@@ -458,6 +568,12 @@ public class EPApplet extends Applet implements ISO7816 {
         sendResponse(apdu, length);
     }
 
+    /**
+     * Check if the PIN in the given command-APDU matches the PIN of the card.
+     * Respond with the CLA, the given nonce and a status code representing 1, if the PINs matched, and -1 if the PINs did not match.
+     *
+     * @param apdu to process.
+     */
     private void checkPin(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
@@ -486,6 +602,12 @@ public class EPApplet extends Applet implements ISO7816 {
         sendResponse(apdu, length);
     }
 
+    /**
+     * Retrieve the nonce in the given command-APDU data buffer. Check if this is not a replay command by comparing it to the last nonce.
+     * If this is not the case, set the given nonce as the current nonce.
+     *
+     * @param buffer to retrieve the nonce from.
+     */
     private void checkNonce(byte[] buffer) {
         short nonce = Util.getShort(buffer, (short) 0);
         if (this.nonce == nonce) {
@@ -497,6 +619,15 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="Counters">
 
+    /**
+     * Determine if the given CLA and INS counters are valid counters.
+     * This is done by checking if CLA counter equals -1 or the given CLA matches the CLA counter. And if the given INS
+     * is always one more than the INS counter.
+     *
+     * @param cla to check.
+     * @param ins to check.
+     * @return true if the counters are valid.
+     */
     private boolean validCounters(byte cla, byte ins) {
         if (claCounter != -1 && claCounter != cla)
             return false;
@@ -507,6 +638,9 @@ public class EPApplet extends Applet implements ISO7816 {
         return true;
     }
 
+    /**
+     * Reset the CLA and INS counters. This is done at the end of a protocol and when the card is selected.
+     */
     private void resetCounters() {
         claCounter = -1;
         insCounter = -1;
@@ -516,6 +650,14 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="RSA">
 
+    /**
+     * Encrypt the given response-APDU data with RSA using the given key.
+     *
+     * @param apdu    to encrypt the data of.
+     * @param msgSize of the data to be encrypted.
+     * @param key     to encrypt with.
+     * @return the length of encrypted response-APDU data buffer.
+     */
     private short encryptRsa(APDU apdu, short msgSize, Key key) {
         byte[] buffer = apdu.getBuffer();
         Util.arrayCopy(buffer, (short) 0, rsaWorkspace, (short) 0, msgSize);
@@ -524,6 +666,12 @@ public class EPApplet extends Applet implements ISO7816 {
         return rsaCipher.doFinal(rsaWorkspace, (short) 0, msgSize, buffer, (short) 0);
     }
 
+    /**
+     * Encrypt the given response-APDU data with RSA using the card's private key.
+     *
+     * @param apdu to encrypt the data of.
+     * @return the length of decrypted response-APDU data buffer.
+     */
     private byte[] decryptRsa(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         Util.arrayCopy(buffer, (short) OFFSET_CDATA, rsaWorkspace, (short) 0, (short) 128);
@@ -539,10 +687,18 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //<editor-fold desc="AES">
 
+    /**
+     * Encrypt the given response-APDU data using AES.
+     * This is done by storing the size of the unencrypted data in the first two bytes, and the encrypted data after that.
+     *
+     * @param apdu    to encrypt the data of.
+     * @param msgSize of the data to be encrypted.
+     * @return the length of encrypted response-APDU data buffer.
+     */
     private short encryptAes(APDU apdu, short msgSize) {
         byte[] buffer = apdu.getBuffer();
 
-        short encSize = (short) (getBlockSize(msgSize) * 16);
+        short encSize = (short) (getBlockCount(msgSize) * 16);
         short paddingSize = (short) (encSize - msgSize);
 
         Util.arrayFillNonAtomic(aesWorkspace, msgSize, paddingSize, (byte) 3);
@@ -559,6 +715,12 @@ public class EPApplet extends Applet implements ISO7816 {
         return (short) (encSize + 2 + 16);
     }
 
+    /**
+     * Encrypt the given response-APDU data using AES.
+     *
+     * @param apdu to encrypt the data of.
+     * @return the length of decrypted response-APDU data buffer.
+     */
     private byte[] decryptAes(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
 
@@ -573,7 +735,13 @@ public class EPApplet extends Applet implements ISO7816 {
         return buffer;
     }
 
-    private short getBlockSize(short msgSize) {
+    /**
+     * Get the amount of 16-bit blocks needed to work with a message of given message size.
+     *
+     * @param msgSize the size of the message to work with.
+     * @return the amount of 16-bit blocks needed.
+     */
+    private short getBlockCount(short msgSize) {
         short blocks = (short) (msgSize / 16);
         if ((msgSize % 16) > 0)
             blocks++;
@@ -583,6 +751,12 @@ public class EPApplet extends Applet implements ISO7816 {
 
     //</editor-fold>
 
+    /**
+     * Send the given response-APDU to the terminal.
+     *
+     * @param apdu   to send.
+     * @param length of the APDU's data buffer.
+     */
     private void sendResponse(APDU apdu, short length) {
         apdu.setOutgoingAndSend((short) 0, length);
     }

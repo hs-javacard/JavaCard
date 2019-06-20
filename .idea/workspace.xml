@@ -4,15 +4,11 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="38745805-c29f-498e-9b01-7bc9133619c9" name="Default Changelist" comment="Pulled make_file branch">
-      <change afterPath="$PROJECT_DIR$/src/main/java/applet/Log.java" afterDir="false" />
+    <list default="true" id="38745805-c29f-498e-9b01-7bc9133619c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/NonceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/NonceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/applet/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/applet/Log.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -30,121 +26,116 @@
     <favorites_list name="JavaCard" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.52241236">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="187">
-                  <caret line="411" lean-forward="true" selection-start-line="411" selection-end-line="411" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/applet/Log.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="499">
-                  <caret line="35" column="67" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="67" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="477">
-                  <caret line="43" column="49" selection-start-line="43" selection-start-column="49" selection-end-line="43" selection-end-column="49" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="64">
-                  <caret line="89" lean-forward="true" selection-start-line="89" selection-end-line="89" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="171">
-                  <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/PaymentTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="496">
-                  <caret line="98" column="55" selection-start-line="98" selection-start-column="55" selection-end-line="98" selection-end-column="55" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="578">
-                  <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/applet/NonceTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="24" column="41" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="197">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="24" column="41" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="407">
+              <caret line="757" column="47" selection-start-line="757" selection-start-column="47" selection-end-line="757" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="72" selection-start-line="12" selection-start-column="72" selection-end-line="12" selection-end-column="72" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/applet/Log.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="59" selection-start-line="3" selection-start-column="59" selection-end-line="3" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/security/AESKey.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/ISO7816.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="186">
+              <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/JCSystem.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="499">
+              <caret line="35" column="67" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="67" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="153" column="48" selection-start-line="153" selection-start-column="48" selection-end-line="153" selection-end-column="48" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -155,21 +146,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>200</find>
-      <find>var4</find>
-      <find>myMessage</find>
-      <find>r1.getData()</find>
-      <find>sharedKey</find>
-      <find>random</find>
-      <find>{0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d}</find>
-      <find>decryptRsa</find>
-      <find>buffer1</find>
-      <find>r.getData()</find>
-      <find>encryptBuffer</find>
-      <find>decryptAes</find>
       <find>encTarget</find>
       <find>TestHelper.</find>
-      <find>aesKeyBuffer</find>
       <find>36864</find>
       <find>r3.getData()</find>
       <find>sym</find>
@@ -185,6 +163,19 @@
       <find>dayNumber</find>
       <find>cardnum</find>
       <find>JCSystem.beginTransaction();</find>
+      <find>makeTransient</find>
+      <find>aesCipher</find>
+      <find>Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);</find>
+      <find>getInstance</find>
+      <find>rsaCipher</find>
+      <find>Cipher</find>
+      <find>new</find>
+      <find>beginTransaction</find>
+      <find>013</find>
+      <find>aesKeyBuffer</find>
+      <find>ivData</find>
+      <find>getblo</find>
+      <find>(byte[]</find>
     </findStrings>
     <replaceStrings>
       <replace>CLA</replace>
@@ -213,16 +204,16 @@
         <option value="$PROJECT_DIR$/src/test/java/applet/InitTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/AesTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/AuthTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/LogResult.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/NonceTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/applet/Log.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" />
+        <option value="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/applet/Log.java" />
       </list>
     </option>
   </component>
@@ -467,7 +458,7 @@
       <workItem from="1560420481506" duration="50000" />
       <workItem from="1560420552155" duration="6458000" />
       <workItem from="1560428801358" duration="389000" />
-      <workItem from="1561022042814" duration="7727000" />
+      <workItem from="1561022042814" duration="13733000" />
     </task>
     <task id="LOCAL-00001" summary="Basic tests working with withdrawal protocol">
       <created>1556201001728</created>
@@ -539,43 +530,57 @@
       <option name="project" value="LOCAL" />
       <updated>1560428825156</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added transactions&#10;Added signing with private key card">
+      <created>1561033330210</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1561033330210</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Fixed some memory leaks">
+      <created>1561035647712</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1561035647712</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="applet_in_JavaCard - 2019.06.20 at 13h 21m 54s.xml">
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 34m 35s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ChangePinTest_testSuccess1 - 2019.06.20 at 13h 24m 14s.xml">
-      <configuration name="ChangePinTest.testSuccess1" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="applet_in_JavaCard - 2019.06.20 at 13h 41m 20s.xml">
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 51m 33s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PaymentTest_testSuccessWithoutPin - 2019.06.20 at 13h 41m 55s.xml">
-      <configuration name="PaymentTest.testSuccessWithoutPin" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentTest_testSuccessWithoutPin - 2019.06.20 at 13h 42m 08s.xml">
-      <configuration name="PaymentTest.testSuccessWithoutPin" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="applet_in_JavaCard - 2019.06.20 at 13h 42m 24s.xml">
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 52m 28s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="applet_in_JavaCard - 2019.06.20 at 13h 47m 12s.xml">
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 52m 49s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 14m 06s.xml">
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 53m 19s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 16m 00s.xml">
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 16h 04m 02s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="applet_in_JavaCard - 2019.06.20 at 14h 17m 52s.xml">
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 16h 09m 15s.xml">
+      <configuration name="applet in JavaCard" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 16h 09m 38s.xml">
+      <configuration name="applet in JavaCard" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 16h 09m 56s.xml">
+      <configuration name="applet in JavaCard" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="applet_in_JavaCard - 2019.06.20 at 16h 15m 01s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85102000" />
+    <option name="totallyTimeSpent" value="91108000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -590,8 +595,8 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.16987951" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.25783134" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.25180724" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.25783134" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -675,58 +680,11 @@
     <MESSAGE value="Merge branch 'master' of https://github.com/hs-javacard/JavaCard&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/applet/EPApplet.java" />
     <MESSAGE value="Altijd verstanding om ff te pushen" />
     <MESSAGE value="Pulled make_file branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pulled make_file branch" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>201</line>
-          <properties />
-          <option name="timeStamp" value="98" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
-          <line>362</line>
-          <properties />
-          <option name="timeStamp" value="100" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java</url>
-          <line>18</line>
-          <properties />
-          <option name="timeStamp" value="105" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Added transactions&#10;Added signing with private key card" />
+    <MESSAGE value="Fixed some memory leaks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed some memory leaks" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/Downloads/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/base/SimulatorSystem.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="147" selection-start-line="147" selection-end-line="147" />
-          <folding>
-            <element signature="e#4445#4446#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/rt.jar!/javax/smartcardio/CommandAPDU.class" />
-    <entry file="jar://$USER_HOME$/Downloads/jcardsim-2.2.1-all.jar!/javacard/framework/SystemException.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Downloads/jcardsim-2.2.1-all.jar!/javacard/framework/AID.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/Assert.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="244">
@@ -868,13 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/JCSystem.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Util.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
@@ -953,57 +904,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/applet/CalcApplet.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet2.java" />
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/ISO7816.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="24" column="10" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/NonceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="24" column="41" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1017,10 +921,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/applet/Log.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre/lib/rt.jar!/java/security/SecureRandom.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+        <state relative-caret-position="-469">
+          <folding>
+            <element signature="e#0#7581#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/security/RandomData.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
@@ -1028,16 +941,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="499">
           <caret line="35" column="67" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="89" lean-forward="true" selection-start-line="89" selection-end-line="89" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1054,13 +957,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/NonceTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="411" lean-forward="true" selection-start-line="411" selection-end-line="411" />
+        <state relative-caret-position="204">
+          <caret line="24" column="41" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/JCSystem.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/ISO7816.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/security/AESKey.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/ISOException.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" column="23" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="24" column="41" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="153" column="48" selection-start-line="153" selection-start-column="48" selection-end-line="153" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="757" column="47" selection-start-line="757" selection-start-column="47" selection-end-line="757" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/KeyHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="72" selection-start-line="12" selection-start-column="72" selection-end-line="12" selection-end-column="72" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/applet/Log.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="59" selection-start-line="3" selection-start-column="59" selection-end-line="3" selection-end-column="59" />
         </state>
       </provider>
     </entry>

@@ -151,7 +151,7 @@ class TestHelper {
         RandomData random = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
         random.generateData(ivData, (short) 0, (short) 16);
 
-        short encLength = (short) (getBlockSize(msgLength) * 16);
+        short encLength = (short) (getBlockCount(msgLength) * 16);
 
         byte[] encryptBuffer = new byte[encLength];
 
@@ -183,7 +183,7 @@ class TestHelper {
         return resultBuffer;
     }
 
-    private static short getBlockSize(short msgSize) {
+    private static short getBlockCount(short msgSize) {
         short blocks = (short) (msgSize / 16);
         if ((msgSize % 16) > 0)
             blocks++;

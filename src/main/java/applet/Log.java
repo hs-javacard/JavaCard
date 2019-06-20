@@ -1,5 +1,8 @@
 package applet;
 
+/**
+ * Class containing identifier numbers for loggin messages.
+ */
 class Log {
 
     static final short PIN_CHANGED = 1001;
