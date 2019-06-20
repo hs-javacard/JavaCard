@@ -3,6 +3,7 @@ package applet;
 import com.licel.jcardsim.io.JavaxSmartCardInterface;
 import javacard.framework.Util;
 import javacard.security.AESKey;
+import javacard.security.RSAPublicKey;
 import org.junit.Test;
 
 import javax.smartcardio.ResponseAPDU;
@@ -20,7 +21,9 @@ public class ChangePinTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        AESKey aesKey = TestHelper.runAuth(sim, CLA);
+        Object[] objs = TestHelper.runAuth(sim, CLA);
+        AESKey aesKey = (AESKey) objs[0];
+        RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         byte[] buffer = new byte[255];
         Util.setShort(buffer, (short) 0, (short) 41); // nonce
@@ -30,11 +33,14 @@ public class ChangePinTest {
         ResponseAPDU r = TestHelper.createAndSendCommand(sim, CLA, (byte) 3, p1, p2, buffer);
 
         byte[] respData = TestHelper.decryptAes(aesKey, r.getData());
-        short nonce = Util.getShort(respData, (short) 1);
+        byte[] respData2 = TestHelper.decryptRsa(pkCard, respData);
 
-        assertEquals("Incorrect r cla", CLA, respData[0]);
-        assertEquals("Incorrect r status code", 1, respData[3]);
+        short nonce = Util.getShort(respData2, (short) 1);
+        short log = Util.getShort(respData2, (short) 3);
+
+        assertEquals("Incorrect r cla", CLA, respData2[0]);
         assertEquals("Incorrect r nonce", 41, nonce);
+        assertEquals("Incorrect r returned log", Log.PIN_CHANGED, log);
         assertEquals("Incorrect r SW", 36864, r.getSW());
     }
 }

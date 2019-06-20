@@ -3,6 +3,7 @@ package applet;
 import com.licel.jcardsim.io.JavaxSmartCardInterface;
 import javacard.framework.Util;
 import javacard.security.AESKey;
+import javacard.security.RSAPublicKey;
 import org.junit.Test;
 
 import javax.smartcardio.ResponseAPDU;
@@ -20,15 +21,18 @@ public class PaymentTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        AESKey aesKey = TestHelper.runAuthNoPin(sim, CLA);
+        Object[] objs = TestHelper.runAuthNoPin(sim, CLA);
+        AESKey aesKey = (AESKey) objs[0];
+        RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         // check soft limit
         byte[] buffer = new byte[255];
         Util.setShort(buffer, (short) 0, (short) 61); // nonce
         Util.setShort(buffer, (short) 2, (short) 10); // payment
         Util.setShort(buffer, (short) 4, (short) 13); // day number
+        Util.setShort(buffer, (short) 6, (short) 2019); // year number
 
-        TestHelper.encryptAes(aesKey, buffer, (short) 6);
+        TestHelper.encryptAes(aesKey, buffer, (short) 8);
         ResponseAPDU r = TestHelper.createAndSendCommand(sim, CLA, (byte) 2, p1, p2, buffer);
 
         byte[] respData = TestHelper.decryptAes(aesKey, r.getData());
@@ -63,10 +67,14 @@ public class PaymentTest {
         ResponseAPDU r3 = TestHelper.createAndSendCommand(sim, CLA, (byte) 4, p1, p2, buffer);
 
         respData = TestHelper.decryptAes(aesKey, r3.getData());
-        nonce = Util.getShort(respData, (short) 1);
+        byte[] respData2 = TestHelper.decryptRsa(pkCard, respData);
 
-        assertEquals("Incorrect r3 cla", CLA, respData[0]);
+        nonce = Util.getShort(respData2, (short) 1);
+        short log = Util.getShort(respData2, (short) 3);
+
+        assertEquals("Incorrect r3 cla", CLA, respData2[0]);
         assertEquals("Incorrect r3 nonce", 63, nonce);
+        assertEquals("Incorrect r returned log", Log.PAYMENT_COMPLETED, log);
         assertEquals("Incorrect r3 SW", 36864, r3.getSW());
     }
 
@@ -77,15 +85,18 @@ public class PaymentTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        AESKey aesKey = TestHelper.runAuthNoPin(sim, CLA);
+        Object[] objs = TestHelper.runAuthNoPin(sim, CLA);
+        AESKey aesKey = (AESKey) objs[0];
+        RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         // check soft limit: no pin needed because 4 < softLimit of 10
         byte[] buffer = new byte[255];
         Util.setShort(buffer, (short) 0, (short) 71); // nonce
         Util.setShort(buffer, (short) 2, (short) 4); // payment
         Util.setShort(buffer, (short) 4, (short) 13); // day number
+        Util.setShort(buffer, (short) 6, (short) 2019); // year number
 
-        TestHelper.encryptAes(aesKey, buffer, (short) 6);
+        TestHelper.encryptAes(aesKey, buffer, (short) 8);
         ResponseAPDU r = TestHelper.createAndSendCommand(sim, CLA, (byte) 2, p1, p2, buffer);
 
         byte[] respData = TestHelper.decryptAes(aesKey, r.getData());
@@ -104,10 +115,14 @@ public class PaymentTest {
         ResponseAPDU r2 = TestHelper.createAndSendCommand(sim, CLA, (byte) 4, p1, p2, buffer);
 
         respData = TestHelper.decryptAes(aesKey, r2.getData());
-        nonce = Util.getShort(respData, (short) 1);
+        byte[] respData2 = TestHelper.decryptRsa(pkCard, respData);
 
-        assertEquals("Incorrect r2 cla", CLA, respData[0]);
+        nonce = Util.getShort(respData2, (short) 1);
+        short log = Util.getShort(respData2, (short) 3);
+
+        assertEquals("Incorrect r2 cla", CLA, respData2[0]);
         assertEquals("Incorrect r nonce", 72, nonce);
+        assertEquals("Incorrect r returned log", Log.PAYMENT_COMPLETED, log);
         assertEquals("Incorrect r2 SW", 36864, r2.getSW());
     }
 

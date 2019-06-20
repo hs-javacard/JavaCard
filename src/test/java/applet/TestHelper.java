@@ -49,11 +49,12 @@ class TestHelper {
         return key;
     }
 
-    static AESKey runAuth(JavaxSmartCardInterface sim, byte cla) {
+    static Object[] runAuth(JavaxSmartCardInterface sim, byte cla) {
         byte p1 = 0;
         byte p2 = 0;
 
-        AESKey aesKey = runAuthNoPin(sim, cla);
+        Object[] objs = TestHelper.runAuthNoPin(sim, cla);
+        AESKey aesKey = (AESKey) objs[0];
 
         // Correct pin
         byte[] buffer = new byte[255];
@@ -63,10 +64,10 @@ class TestHelper {
         encryptAes(aesKey, buffer, (short) 4);
         createAndSendCommand(sim, cla, (byte) 2, p1, p2, buffer);
 
-        return aesKey;
+        return objs;
     }
 
-    static AESKey runAuthNoPin(JavaxSmartCardInterface sim, byte cla) {
+    static Object[] runAuthNoPin(JavaxSmartCardInterface sim, byte cla) {
         byte p1 = 0;
         byte p2 = 0;
 
@@ -93,7 +94,7 @@ class TestHelper {
         encryptRsa(cardPk, buffer, (short) 18);
         createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
-        return aesKey;
+        return new Object[]{aesKey, cardPk};
     }
 
     static KeyPair createKeyPairRsa() {
@@ -123,7 +124,7 @@ class TestHelper {
         return rsaCipher.doFinal(decryptBuffer, (short) 0, msgSize, buffer, (short) 0);
     }
 
-    static byte[] decryptRsa(PrivateKey key, byte[] buffer) {
+    static byte[] decryptRsa(Key key, byte[] buffer) {
         byte[] decryptBuffer = new byte[255];
 
         Cipher rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
@@ -165,19 +166,21 @@ class TestHelper {
     }
 
     static byte[] decryptAes(AESKey key, byte[] buffer) {
-        byte[] ivData = new byte[16];
-        byte[] decryptBuffer = new byte[250];
 
         short encSize = Util.getShort(buffer, (short) 0);
+
+        byte[] ivData = new byte[16];
+        byte[] decryptBuffer = new byte[encSize];
+        byte[] resultBuffer = new byte[encSize];
 
         Util.arrayCopy(buffer, (short) 2, decryptBuffer, (short) 0, encSize);
         Util.arrayCopy(buffer, (short) (encSize + 2), ivData, (short) 0, (short) 16);
 
         Cipher aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         aesCipher.init(key, Cipher.MODE_DECRYPT, ivData, (short) 0, (short) 16);
-        aesCipher.doFinal(decryptBuffer, (short) 0, encSize, buffer, (short) 0);
+        aesCipher.doFinal(decryptBuffer, (short) 0, encSize, resultBuffer, (short) 0);
 
-        return buffer;
+        return resultBuffer;
     }
 
     private static short getBlockSize(short msgSize) {

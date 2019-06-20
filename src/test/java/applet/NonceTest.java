@@ -21,7 +21,8 @@ public class NonceTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        AESKey aesKey = TestHelper.runAuthNoPin(sim, CLA);
+        Object[] objs = TestHelper.runAuthNoPin(sim, CLA);
+        AESKey aesKey = (AESKey) objs[0];
 
         // Incorrect pin
         byte[] buffer = new byte[255];

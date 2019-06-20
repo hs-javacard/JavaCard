@@ -32,6 +32,7 @@ public class EPApplet extends Applet implements ISO7816 {
     private short paymentAmount;
 
     private short dayNumber;
+    private short yearNumber;
     private short totalToday;
 
     private short softLimit;
@@ -86,8 +87,10 @@ public class EPApplet extends Applet implements ISO7816 {
         byte cla = buffer[OFFSET_CLA];
         byte ins = buffer[OFFSET_INS];
 
-        if (selectingApplet()) // we ignore this, it makes ins = -92
+        if (selectingApplet()) { // we ignore this, it makes ins = -92
+            resetCounters();
             return;
+        }
 
         if (validCounters(cla, ins)) {
             claCounter = cla;
@@ -144,8 +147,12 @@ public class EPApplet extends Applet implements ISO7816 {
         softLimit = Util.getShort(buffer, (short) (offset + 6));
         hardLimit = Util.getShort(buffer, (short) (offset + 8));
 
+        JCSystem.beginTransaction();
+
         pin = new OwnerPIN(PIN_TRY_LIMIT, MAX_PIN_SIZE);
         pin.update(buffer, (short) (offset + 4), (byte) 2);
+
+        JCSystem.commitTransaction();
 
         resetCounters();
         sendPublicKey(apdu);
@@ -195,16 +202,21 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
 
+        JCSystem.beginTransaction();
+
         pin.update(buffer, (short) 2, (byte) 2);
 
         buffer[0] = claCounter;
-        buffer[3] = 1; // status code
         Util.setShort(buffer, (short) 1, nonce);
+        Util.setShort(buffer, (short) 3, Log.PIN_CHANGED);
 
         resetCounters();
 
-        short length = encryptAes(apdu, (short) 4);
-        sendResponse(apdu, length);
+        short rsaLength = encryptRsa(apdu, (short) 5, keyPair.getPrivate());
+        short aesLength = encryptAes(apdu, rsaLength);
+        sendResponse(apdu, aesLength);
+
+        JCSystem.commitTransaction();
     }
 
     //</editor-fold>
@@ -241,6 +253,8 @@ public class EPApplet extends Applet implements ISO7816 {
         byte statusCode;
         short newSoftLimit = Util.getShort(buffer, (short) 2);
 
+        JCSystem.beginTransaction();
+
         if (newSoftLimit > hardLimit) {
             statusCode = -1;
         } else {
@@ -252,11 +266,15 @@ public class EPApplet extends Applet implements ISO7816 {
         buffer[3] = statusCode;
         Util.setShort(buffer, (short) 1, nonce);
         Util.setShort(buffer, (short) 4, softLimit);
+        Util.setShort(buffer, (short) 6, Log.SOFT_LIMIT_CHANGED);
 
         resetCounters();
 
-        short length = encryptAes(apdu, (short) 6);
-        sendResponse(apdu, length);
+        short rsaLength = encryptRsa(apdu, (short) 8, keyPair.getPrivate());
+        short aesLength = encryptAes(apdu, rsaLength);
+        sendResponse(apdu, aesLength);
+
+        JCSystem.commitTransaction();
     }
 
     //</editor-fold>
@@ -295,8 +313,22 @@ public class EPApplet extends Applet implements ISO7816 {
 
         paymentAmount = Util.getShort(buffer, (short) 2);
         short dayNumber = Util.getShort(buffer, (short) 4);
-        if (this.dayNumber != dayNumber)
+        short yearNumber = Util.getShort(buffer, (short) 6);
+
+        JCSystem.beginTransaction();
+
+        if (this.yearNumber != yearNumber) {
+            this.yearNumber = yearNumber;
+            this.dayNumber = dayNumber;
+
             totalToday = 0;
+        } else if (this.dayNumber != dayNumber) {
+            this.dayNumber = dayNumber;
+
+            totalToday = 0;
+        }
+
+        JCSystem.commitTransaction();
 
         buffer[0] = claCounter;
         byte statusCode;
@@ -331,15 +363,21 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
 
+        JCSystem.beginTransaction();
+
         balance -= paymentAmount;
 
         buffer[0] = claCounter;
         Util.setShort(buffer, (short) 1, nonce);
+        Util.setShort(buffer, (short) 3, Log.PAYMENT_COMPLETED);
 
         resetCounters();
 
-        short length = encryptAes(apdu, (short) 3);
-        sendResponse(apdu, length);
+        short rsaLength = encryptRsa(apdu, (short) 5, keyPair.getPrivate());
+        short aesLength = encryptAes(apdu, rsaLength);
+        sendResponse(apdu, aesLength);
+
+        JCSystem.commitTransaction();
     }
 
     //</editor-fold>
@@ -371,16 +409,22 @@ public class EPApplet extends Applet implements ISO7816 {
 
         checkNonce(buffer);
         short amount = Util.getShort(buffer, (short) 2);
+
+        JCSystem.beginTransaction();
+
         balance += amount;
 
         buffer[0] = claCounter;
         Util.setShort(buffer, (short) 1, nonce);
-        Util.setShort(buffer, (short) 3, balance);
+        Util.setShort(buffer, (short) 3, Log.DEPOSIT_COMPLETED);
 
         resetCounters();
 
-        short length = encryptAes(apdu, (short) 5);
-        sendResponse(apdu, length);
+        short rsaLength = encryptRsa(apdu, (short) 5, keyPair.getPrivate());
+        short aesLength = encryptAes(apdu, rsaLength);
+        sendResponse(apdu, aesLength);
+
+        JCSystem.commitTransaction();
     }
 
     //</editor-fold>
@@ -388,6 +432,7 @@ public class EPApplet extends Applet implements ISO7816 {
     private void retrievePkTAndSendCardNumber(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
         nonce = Util.getShort(buffer, OFFSET_CDATA);
+
         KeyHelper.init(pkTerminal, buffer, (short) (OFFSET_CDATA + 2));
 
         insCounter++;
