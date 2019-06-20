@@ -24,7 +24,6 @@ public class EPApplet extends Applet implements ISO7816 {
     private RandomData random;
 
     private byte[] ivData;
-    private byte[] aesKeyBuffer = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
 
     private short cardNumber;
 
@@ -59,6 +58,8 @@ public class EPApplet extends Applet implements ISO7816 {
             ISOException.throwIt(reason);
         }
 
+        pin = new OwnerPIN(PIN_TRY_LIMIT, MAX_PIN_SIZE);
+
         aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
 
@@ -66,8 +67,6 @@ public class EPApplet extends Applet implements ISO7816 {
         aesWorkspace = JCSystem.makeTransientByteArray((short) 256, JCSystem.CLEAR_ON_DESELECT);
 
         ivData = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
-//        aesKeyBuffer = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
-//        aesKeyBuffer = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
 
         random = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
 
@@ -142,14 +141,13 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = apdu.getBuffer();
         byte offset = OFFSET_CDATA;
 
+        JCSystem.beginTransaction();
+
         cardNumber = Util.getShort(buffer, (short) offset);
         balance = Util.getShort(buffer, (short) (offset + 2));
         softLimit = Util.getShort(buffer, (short) (offset + 6));
         hardLimit = Util.getShort(buffer, (short) (offset + 8));
 
-        JCSystem.beginTransaction();
-
-        pin = new OwnerPIN(PIN_TRY_LIMIT, MAX_PIN_SIZE);
         pin.update(buffer, (short) (offset + 4), (byte) 2);
 
         JCSystem.commitTransaction();
@@ -449,7 +447,7 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = decryptRsa(apdu);
 
         checkNonce(buffer);
-        initSymmetricKey(buffer);
+        aesKey.setKey(buffer, (short) 2);
 
         buffer[0] = claCounter;
         Util.setShort(buffer, (short) 1, nonce);
@@ -460,14 +458,11 @@ public class EPApplet extends Applet implements ISO7816 {
         sendResponse(apdu, length);
     }
 
-    private void initSymmetricKey(byte[] buffer) {
-        Util.arrayCopy(buffer, (short) 2, aesKeyBuffer, (short) 0, (short) 16);
-        aesKey.setKey(aesKeyBuffer, (short) 0);
-    }
-
     private void checkPin(APDU apdu) {
         byte[] buffer = decryptAes(apdu);
         checkNonce(buffer);
+
+        JCSystem.beginTransaction();
 
         boolean correctPin = pin.check(buffer, (short) 2, (byte) 2);
         byte statusCode;
@@ -480,6 +475,8 @@ public class EPApplet extends Applet implements ISO7816 {
         } else {
             statusCode = -1;
         }
+
+        JCSystem.commitTransaction();
 
         buffer[0] = claCounter;
         buffer[3] = statusCode;
@@ -553,7 +550,6 @@ public class EPApplet extends Applet implements ISO7816 {
 
         random.generateData(ivData, (short) 0, (short) 16);
 
-        Cipher aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         aesCipher.init(aesKey, Cipher.MODE_ENCRYPT, ivData, (short) 0, (short) 16);
         aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 2);
 
@@ -571,7 +567,6 @@ public class EPApplet extends Applet implements ISO7816 {
         Util.arrayCopy(buffer, (short) (OFFSET_CDATA + 2), aesWorkspace, (short) 0, encSize);
         Util.arrayCopy(buffer, (short) (OFFSET_CDATA + encSize + 2), ivData, (short) 0, (short) 16);
 
-        aesKey.setKey(aesKeyBuffer, (short) 0);
         aesCipher.init(aesKey, Cipher.MODE_DECRYPT, ivData, (short) 0, (short) 16);
         aesCipher.doFinal(aesWorkspace, (short) 0, encSize, buffer, (short) 0);
 
