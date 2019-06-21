@@ -12,6 +12,8 @@ public class EPApplet extends Applet implements ISO7816 {
     private static final byte PIN_TRY_LIMIT = 3;
     private static final byte MAX_PIN_SIZE = 4;
 
+    private byte[] hardcodedKeyfortesting = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};;
+
     private RSAPublicKey pkTerminal;
     private KeyPair keyPair;
     private AESKey aesKey;
@@ -109,12 +111,12 @@ public class EPApplet extends Applet implements ISO7816 {
         if (selectingApplet())  // we ignore this, it makes ins = -92
             return;
 
-        if (validCounters(cla, ins)) {
+//        if (validCounters(cla, ins)) {
             claCounter = cla;
-        } else {
-            ISOException.throwIt(SW_CONDITIONS_NOT_SATISFIED);
-            return;
-        }
+//        } else {
+//            ISOException.throwIt(SW_CONDITIONS_NOT_SATISFIED);
+//            return;
+//        }
 
         switch (cla) {
             case (byte) 0xd0:
@@ -133,7 +135,8 @@ public class EPApplet extends Applet implements ISO7816 {
                 deposit(apdu);
                 break;
             default:
-                ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
+                ISOException.throwIt((short) (SW_CORRECT_LENGTH_00 | cla));
+//                ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
                 break;
         }
     }
@@ -183,7 +186,8 @@ public class EPApplet extends Applet implements ISO7816 {
 
         pin.update(buffer, (short) (offset + 4), (byte) 2);
 
-        initialized = true;
+//        initialized = true;
+        //TODO Fix variable after testing ^^^^^
 
         JCSystem.commitTransaction();
 
@@ -557,7 +561,6 @@ public class EPApplet extends Applet implements ISO7816 {
      */
     private void retrieveSymmetricKey(APDU apdu) {
         byte[] buffer = decryptRsa(apdu);
-
         checkNonce(buffer);
         aesKey.setKey(buffer, (short) 2);
 
@@ -612,7 +615,7 @@ public class EPApplet extends Applet implements ISO7816 {
      */
     private void checkNonce(byte[] buffer) {
         short nonce = Util.getShort(buffer, (short) 0);
-        if (this.nonce == nonce) {
+        if (this.nonce == nonce) { // TODO, are they really supposed to not be equal?
             ISOException.throwIt(SW_COMMAND_NOT_ALLOWED);
         } else {
             this.nonce = nonce;

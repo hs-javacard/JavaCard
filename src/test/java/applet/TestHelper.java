@@ -93,7 +93,7 @@ class TestHelper {
         Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 2, (short) 16); //aesKey
 
         encryptRsa(cardPk, buffer, (short) 18);
-        createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
+        ResponseAPDU r = createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
         return new Object[]{aesKey, cardPk};
     }
