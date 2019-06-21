@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ChangeSoftLimitTest {
 
-    private static final byte CLA = 1;
+    private static final byte CLA = (byte) 0xd2;
 
     @Test
     public void testSuccess1() {

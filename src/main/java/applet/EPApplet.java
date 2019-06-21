@@ -117,19 +117,19 @@ public class EPApplet extends Applet implements ISO7816 {
         }
 
         switch (cla) {
-            case -1:
+            case (byte) 0xd0:
                 initialize(apdu);
                 break;
-            case 0:
+            case (byte) 0xd1:
                 changePinMain(apdu);
                 break;
-            case 1: // Change soft limit
+            case (byte) 0xd2: // Change soft limit
                 changeSoftLimitMain(apdu);
                 break;
-            case 2: // Payment, so balance decrease
+            case (byte) 0xd3: // Payment, so balance decrease
                 payment(apdu);
                 break;
-            case 3: // Deposit, so balance increase
+            case (byte) 0xd4: // Deposit, so balance increase
                 deposit(apdu);
                 break;
             default:
@@ -543,7 +543,9 @@ public class EPApplet extends Applet implements ISO7816 {
         Util.setShort(buffer, (short) 1, nonce);
         Util.setShort(buffer, (short) 3, cardNumber);
 
-        short length = encryptRsa(apdu, (short) 5, pkTerminal);
+        short msgSize = 5;
+        short length = encryptRsa(apdu, msgSize, pkTerminal);
+//        Util.setShort(buffer, (short) 0, length);
         sendResponse(apdu, length);
     }
 
@@ -629,7 +631,7 @@ public class EPApplet extends Applet implements ISO7816 {
      * @return true if the counters are valid.
      */
     private boolean validCounters(byte cla, byte ins) {
-        if (claCounter != -1 && claCounter != cla)
+        if (claCounter != (byte) (0xd0) && claCounter != cla)
             return false;
 
         if (insCounter + 1 != ins)
@@ -642,7 +644,7 @@ public class EPApplet extends Applet implements ISO7816 {
      * Reset the CLA and INS counters. This is done at the end of a protocol and when the card is selected.
      */
     private void resetCounters() {
-        claCounter = -1;
+        claCounter = (byte) 0xd0;
         insCounter = -1;
     }
 
