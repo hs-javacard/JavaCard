@@ -12,7 +12,8 @@ public class EPApplet extends Applet implements ISO7816 {
     private static final byte PIN_TRY_LIMIT = 3;
     private static final byte MAX_PIN_SIZE = 4;
 
-    private byte[] hardcodedKeyfortesting = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};;
+    private byte[] hardcodedKeyfortesting = {0x2d, 0x2a, 0x2d, 0x42, 0x55, 0x49, 0x4c, 0x44, 0x41, 0x43, 0x4f, 0x44, 0x45, 0x2d, 0x2a, 0x2d};
+    ;
 
     private RSAPublicKey pkTerminal;
     private KeyPair keyPair;
@@ -114,7 +115,7 @@ public class EPApplet extends Applet implements ISO7816 {
             return;
 
 //        if (validCounters(cla, ins)) {
-            claCounter = cla;
+        claCounter = cla;
 //        } else {
 //            ISOException.throwIt(SW_CONDITIONS_NOT_SATISFIED);
 //            return;
@@ -464,11 +465,12 @@ public class EPApplet extends Applet implements ISO7816 {
 
         buffer[0] = claCounter;
         Util.setShort(buffer, (short) 1, nonce);
-        Util.setShort(buffer, (short) 3, Log.PAYMENT_COMPLETED);
+        Util.setShort(buffer, (short) 3, balance);
+        Util.setShort(buffer, (short) 5, Log.PAYMENT_COMPLETED);
 
         resetCounters();
 
-        short rsaLength = encryptRsa(apdu, (short) 5, keyPair.getPrivate());
+        short rsaLength = encryptRsa(apdu, (short) 7, keyPair.getPrivate());
         short aesLength = encryptAes(apdu, rsaLength);
         sendResponse(apdu, aesLength);
 
@@ -522,11 +524,12 @@ public class EPApplet extends Applet implements ISO7816 {
 
         buffer[0] = claCounter;
         Util.setShort(buffer, (short) 1, nonce);
-        Util.setShort(buffer, (short) 3, Log.DEPOSIT_COMPLETED);
+        Util.setShort(buffer, (short) 3, balance);
+        Util.setShort(buffer, (short) 5, Log.DEPOSIT_COMPLETED);
 
         resetCounters();
 
-        short rsaLength = encryptRsa(apdu, (short) 5, keyPair.getPrivate());
+        short rsaLength = encryptRsa(apdu, (short) 7, keyPair.getPrivate());
         short aesLength = encryptAes(apdu, rsaLength);
         sendResponse(apdu, aesLength);
 
@@ -564,7 +567,7 @@ public class EPApplet extends Applet implements ISO7816 {
     private void retrieveSymmetricKey(APDU apdu) {
         byte[] buffer = decryptRsa(apdu);
 
-        checkNonce(buffer);
+        nonce = Util.getShort(buffer, (short) 0);
         aesKey.setKey(buffer, (short) 2);                   // Set AES key
         KeyHelper.init(pkTerminal, buffer, (short) 34);     // Set terminal PublicKey
 
@@ -632,11 +635,8 @@ public class EPApplet extends Applet implements ISO7816 {
      */
     private void checkNonce(byte[] buffer) {
         short nonce = Util.getShort(buffer, (short) 0);
-        if (this.nonce == nonce) { // TODO, are they really supposed to not be equal?
+        if (this.nonce != nonce)
             ISOException.throwIt(SW_COMMAND_NOT_ALLOWED);
-        } else {
-            this.nonce = nonce;
-        }
     }
 
     //<editor-fold desc="Counters">

@@ -21,13 +21,13 @@ public class ChangeSoftLimitTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        Object[] objs = TestHelper.runAuth(sim, CLA);
+        Object[] objs = TestHelper.runAuth(sim, CLA, (short) 30);
         AESKey aesKey = (AESKey) objs[0];
         RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         // change soft limit
         byte[] buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 31); // nonce
+        Util.setShort(buffer, (short) 0, (short) 30); // nonce
         Util.setShort(buffer, (short) 2, (short) 4); // soft limit
 
         TestHelper.encryptAes(aesKey, buffer, (short) 4);
@@ -41,7 +41,7 @@ public class ChangeSoftLimitTest {
         short log = Util.getShort(respData2, (short) 6);
 
         assertEquals("Incorrect r cla", CLA, respData2[0]);
-        assertEquals("Incorrect r nonce", 31, nonce);
+        assertEquals("Incorrect r nonce", 30, nonce);
         assertEquals("Incorrect r status code", 1, respData2[3]);
         assertEquals("Incorrect r returned soft limit", 4, softLimit);
         assertEquals("Incorrect r returned log", Log.SOFT_LIMIT_CHANGED, log);
@@ -55,12 +55,12 @@ public class ChangeSoftLimitTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        Object[] objs = TestHelper.runAuth(sim, CLA);
+        Object[] objs = TestHelper.runAuth(sim, CLA, (short) 30);
         AESKey aesKey = (AESKey) objs[0];
         RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         byte[] buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 32); // nonce
+        Util.setShort(buffer, (short) 0, (short) 30); // nonce
         Util.setShort(buffer, (short) 2, (short) 5); // soft limit
 
         TestHelper.encryptAes(aesKey, buffer, (short) 4);
@@ -74,7 +74,7 @@ public class ChangeSoftLimitTest {
         short log = Util.getShort(respData2, (short) 6);
 
         assertEquals("Incorrect r cla", CLA, respData2[0]);
-        assertEquals("Incorrect r nonce", 32, nonce);
+        assertEquals("Incorrect r nonce", 30, nonce);
         assertEquals("Incorrect r status code", 1, respData2[3]);
         assertEquals("Incorrect r returned soft limit", 5, softLimit);
         assertEquals("Incorrect r returned log", Log.SOFT_LIMIT_CHANGED, log);
@@ -88,12 +88,12 @@ public class ChangeSoftLimitTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        Object[] objs = TestHelper.runAuth(sim, CLA);
+        Object[] objs = TestHelper.runAuth(sim, CLA, (short) 80);
         AESKey aesKey = (AESKey) objs[0];
         RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         byte[] buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 33); // nonce
+        Util.setShort(buffer, (short) 0, (short) 80); // nonce
         Util.setShort(buffer, (short) 2, (short) 31); // soft limit
 
         TestHelper.encryptAes(aesKey, buffer, (short) 4);
@@ -107,7 +107,7 @@ public class ChangeSoftLimitTest {
         short log = Util.getShort(respData2, (short) 6);
 
         assertEquals("Incorrect r cla", CLA, respData2[0]);
-        assertEquals("Incorrect r nonce", 33, nonce);
+        assertEquals("Incorrect r nonce", 80, nonce);
         assertEquals("Incorrect r status code", -1, respData2[3]);
         assertEquals("Incorrect r returned soft limit", 5, softLimit);
         assertEquals("Incorrect r returned log", Log.SOFT_LIMIT_CHANGED, log);

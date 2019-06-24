@@ -21,7 +21,7 @@ public class NonceTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        Object[] objs = TestHelper.runAuthNoPin(sim, CLA);
+        Object[] objs = TestHelper.runAuthNoPin(sim, CLA, (short) 13);
         AESKey aesKey = (AESKey) objs[0];
 
         // Incorrect pin
@@ -34,7 +34,7 @@ public class NonceTest {
 
         // Incorrect pin
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 13); //nonce
+        Util.setShort(buffer, (short) 0, (short) 14); //nonce
         Util.setShort(buffer, (short) 2, (short) 9999); //pin
 
         TestHelper.encryptAes(aesKey, buffer, (short) 4);

@@ -21,13 +21,13 @@ public class DepositTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        Object[] objs = TestHelper.runAuthNoPin(sim, CLA);
+        Object[] objs = TestHelper.runAuthNoPin(sim, CLA, (short) 50);
         AESKey aesKey = (AESKey) objs[0];
         RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         // check card number
         byte[] buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 51); // nonce
+        Util.setShort(buffer, (short) 0, (short) 50); // nonce
         Util.setShort(buffer, (short) 2, (short) 5000); // deposit
 
         TestHelper.encryptAes(aesKey, buffer, (short) 4);
@@ -37,11 +37,13 @@ public class DepositTest {
         byte[] respData2 = TestHelper.decryptRsa(pkCard, respData);
 
         short nonce = Util.getShort(respData2, (short) 1);
-        short log = Util.getShort(respData2, (short) 3);
+        short balance = Util.getShort(respData2, (short) 3);
+        short log = Util.getShort(respData2, (short) 5);
 
         assertEquals("Incorrect r cla", CLA, respData2[0]);
-        assertEquals("Incorrect r nonce", 51, nonce);
-        assertEquals("Incorrect r log", Log.DEPOSIT_COMPLETED, log); // default amount is 20
+        assertEquals("Incorrect r nonce", 50, nonce);
+        assertEquals("Incorrect r balance", 5020, balance); // default amount is 20
+        assertEquals("Incorrect r log", Log.DEPOSIT_COMPLETED, log);
         assertEquals("Incorrect r SW", 36864, r.getSW());
     }
 

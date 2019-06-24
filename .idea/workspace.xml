@@ -34,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+            <state relative-caret-position="-1114">
+              <caret line="23" column="63" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -46,8 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="565" lean-forward="true" selection-start-line="565" selection-end-line="565" />
+            <state relative-caret-position="146">
+              <caret line="528" lean-forward="true" selection-start-line="528" selection-end-line="528" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -56,19 +56,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/applet/PaymentTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="31" lean-forward="true" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
+            <state relative-caret-position="160">
+              <caret line="73" column="54" selection-start-line="73" selection-start-column="54" selection-end-line="73" selection-end-column="54" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="34" selection-start-line="34" selection-end-line="34" />
+            <state relative-caret-position="374">
+              <caret line="39" column="60" lean-forward="true" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="60" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -87,12 +90,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TestHelper.</find>
-      <find>36864</find>
-      <find>r3.getData()</find>
-      <find>sym</find>
-      <find>checkpin</find>
-      <find>incre</find>
       <find>softlimit</find>
       <find>respData2</find>
       <find>cardPk</find>
@@ -117,6 +114,12 @@
       <find>getblo</find>
       <find>(byte[]</find>
       <find>pkTerminal</find>
+      <find>checkNonce</find>
+      <find>softLimit</find>
+      <find>decrese</find>
+      <find>nonce</find>
+      <find>decreaseBala</find>
+      <find>decreaseBa</find>
     </findStrings>
     <replaceStrings>
       <replace>CLA</replace>
@@ -145,16 +148,16 @@
         <option value="$PROJECT_DIR$/src/test/java/applet/InitTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/AesTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/LogResult.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/NonceTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/KeyHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/applet/Log.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/AuthTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" />
         <option value="$PROJECT_DIR$/src/test/java/applet/TestHelper.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/DepositTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/NonceTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/applet/EPApplet.java" />
+        <option value="$PROJECT_DIR$/src/test/java/applet/PaymentTest.java" />
       </list>
     </option>
   </component>
@@ -200,6 +203,32 @@
             <path>
               <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
               <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="jcardsim-2.2.1-all.jar" type="ab9368bb:PsiFileNode" />
+            </path>
+            <path>
+              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="jcardsim-2.2.1-all.jar" type="ab9368bb:PsiFileNode" />
+              <item name="jcardsim" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="jcardsim-2.2.1-all.jar" type="ab9368bb:PsiFileNode" />
+              <item name="jcardsim" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JavaCard" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -243,62 +272,6 @@
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="applet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: junit:junit:4.12" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: junit:junit:4.12" type="70bed36:NamedLibraryElementNode" />
-              <item name="junit-4.12.jar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: junit:junit:4.12" type="70bed36:NamedLibraryElementNode" />
-              <item name="junit-4.12.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="junit" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: junit:junit:4.12" type="70bed36:NamedLibraryElementNode" />
-              <item name="junit-4.12.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="junit" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: junit:junit:4.12" type="70bed36:NamedLibraryElementNode" />
-              <item name="junit-4.12.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="junit" type="462c0819:PsiDirectoryNode" />
-              <item name="internal" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: junit:junit:4.12" type="70bed36:NamedLibraryElementNode" />
-              <item name="junit-4.12.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="junit" type="462c0819:PsiDirectoryNode" />
-              <item name="internal" type="462c0819:PsiDirectoryNode" />
-              <item name="runners" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaCard" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: junit:junit:4.12" type="70bed36:NamedLibraryElementNode" />
-              <item name="junit-4.12.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="junit" type="462c0819:PsiDirectoryNode" />
-              <item name="internal" type="462c0819:PsiDirectoryNode" />
-              <item name="runners" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -338,7 +311,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.applet in JavaCard">
+  <component name="RunManager" selected="JUnit.PaymentTest.testSuccessWithPin">
     <configuration name="AuthTest.runAuth" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="JavaCard" />
       <extension name="coverage">
@@ -371,7 +344,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PaymentTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DepositTest.testSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="JavaCard" />
       <extension name="coverage">
         <pattern>
@@ -380,13 +353,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="applet" />
-      <option name="MAIN_CLASS_NAME" value="applet.PaymentTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="applet.DepositTest" />
+      <option name="METHOD_NAME" value="testSuccess" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PaymentTest.testSuccessWithoutPin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PaymentTest.testSuccessWithPin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="JavaCard" />
       <extension name="coverage">
         <pattern>
@@ -396,7 +370,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="applet" />
       <option name="MAIN_CLASS_NAME" value="applet.PaymentTest" />
-      <option name="METHOD_NAME" value="testSuccessWithoutPin" />
+      <option name="METHOD_NAME" value="testSuccessWithPin" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -418,18 +392,18 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.applet in JavaCard" />
-      <item itemvalue="JUnit.PaymentTest" />
-      <item itemvalue="JUnit.PaymentTest.testSuccessWithoutPin" />
       <item itemvalue="JUnit.ChangePinTest.testSuccess1" />
       <item itemvalue="JUnit.AuthTest.runAuth" />
+      <item itemvalue="JUnit.DepositTest.testSuccess" />
+      <item itemvalue="JUnit.PaymentTest.testSuccessWithPin" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PaymentTest.testSuccessWithPin" />
+        <item itemvalue="JUnit.DepositTest.testSuccess" />
         <item itemvalue="JUnit.applet in JavaCard" />
         <item itemvalue="JUnit.AuthTest.runAuth" />
         <item itemvalue="JUnit.ChangePinTest.testSuccess1" />
-        <item itemvalue="JUnit.PaymentTest.testSuccessWithoutPin" />
-        <item itemvalue="JUnit.PaymentTest" />
       </list>
     </recent_temporary>
   </component>
@@ -454,7 +428,7 @@
       <workItem from="1560420552155" duration="6458000" />
       <workItem from="1560428801358" duration="389000" />
       <workItem from="1561022042814" duration="14011000" />
-      <workItem from="1561374939788" duration="5697000" />
+      <workItem from="1561374939788" duration="6465000" />
     </task>
     <task id="LOCAL-00001" summary="Basic tests working with withdrawal protocol">
       <created>1556201001728</created>
@@ -554,49 +528,56 @@
       <option name="project" value="LOCAL" />
       <updated>1561380757907</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Merge branch 'master' of https://github.com/hs-javacard/JavaCard&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/applet/EPApplet.java&#10;#&#9;src/test/java/applet/TestHelper.java">
+      <created>1561381110528</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1561381110528</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AuthTest_runAuth - 2019.06.24 at 14h 25m 13s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ChangePinTest_testSuccess1 - 2019.06.24 at 14h 25m 59s.xml">
-      <configuration name="ChangePinTest.testSuccess1" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="applet_in_JavaCard - 2019.06.24 at 14h 26m 05s.xml">
-      <configuration name="applet in JavaCard" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.24 at 14h 41m 16s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.24 at 14h 41m 44s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.24 at 14h 42m 28s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.24 at 14h 43m 54s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.24 at 14h 44m 03s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AuthTest_runAuth - 2019.06.24 at 14h 44m 20s.xml">
-      <configuration name="AuthTest.runAuth" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="applet_in_JavaCard - 2019.06.24 at 14h 44m 28s.xml">
       <configuration name="applet in JavaCard" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="applet_in_JavaCard - 2019.06.24 at 15h 01m 06s.xml">
+      <configuration name="applet in JavaCard" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 07m 43s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 08m 34s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 12m 58s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 13m 27s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 14m 19s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 17m 27s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 18m 42s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DepositTest_testSuccess - 2019.06.24 at 15h 19m 56s.xml">
+      <configuration name="DepositTest.testSuccess" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="97083000" />
+    <option name="totallyTimeSpent" value="98339000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.498366" visible="true" weight="0.19241774" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.498366" visible="true" weight="0.19241774" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24964234" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -605,15 +586,15 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.25180724" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.42771083" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.25180724" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.20963855" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.22831859" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Statistic" order="9" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="10" visible="true" weight="0.17710844" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.17710844" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.19759037" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="13" />
@@ -694,7 +675,20 @@
     <MESSAGE value="Fixed some memory leaks" />
     <MESSAGE value="Added comments" />
     <MESSAGE value="Added new protocol for establishing new symmetric key" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new protocol for establishing new symmetric key" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/hs-javacard/JavaCard&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/applet/EPApplet.java&#10;#&#9;src/test/java/applet/TestHelper.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/hs-javacard/JavaCard&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/applet/EPApplet.java&#10;#&#9;src/test/java/applet/TestHelper.java" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java</url>
+          <line>465</line>
+          <properties />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/org/junit/Assert.class">
@@ -900,25 +894,8 @@
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/AesTest.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/RsaTest.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/InitTest.java" />
-    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/base/SimulatorRuntime.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="180" selection-start-line="180" selection-end-line="180" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/applet/CalcApplet.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet2.java" />
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="477">
-          <caret line="43" column="49" selection-start-line="43" selection-start-column="49" selection-end-line="43" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre/lib/rt.jar!/java/security/SecureRandom.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-469">
@@ -932,26 +909,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/PaymentTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="98" column="55" selection-start-line="98" selection-start-column="55" selection-end-line="98" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/NonceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="24" column="41" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1007,16 +964,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="35" column="67" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/javacard/framework/Util.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="268">
@@ -1024,10 +971,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
+    <entry file="jar://$PROJECT_DIR$/lib/jcardsim-2.2.1-all.jar!/com/licel/jcardsim/base/SimulatorRuntime.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+        <state relative-caret-position="307">
+          <caret line="179" selection-start-line="179" selection-end-line="179" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-292">
+          <caret line="67" column="52" selection-start-line="67" selection-start-column="52" selection-end-line="67" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1036,8 +990,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/applet/AuthTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="2074">
+          <caret line="128" column="45" selection-start-line="128" selection-start-column="45" selection-end-line="128" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangePinTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="23" column="63" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/NonceTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="23" column="68" selection-start-line="23" selection-start-column="68" selection-end-line="23" selection-end-column="68" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/ChangeSoftLimitTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1114">
+          <caret line="23" column="63" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1046,18 +1030,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/applet/EPApplet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="565" lean-forward="true" selection-start-line="565" selection-end-line="565" />
+        <state relative-caret-position="146">
+          <caret line="528" lean-forward="true" selection-start-line="528" selection-end-line="528" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/applet/TestHelper.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/DepositTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="31" lean-forward="true" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
+        <state relative-caret-position="374">
+          <caret line="39" column="60" lean-forward="true" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/applet/PaymentTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="73" column="54" selection-start-line="73" selection-start-column="54" selection-end-line="73" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

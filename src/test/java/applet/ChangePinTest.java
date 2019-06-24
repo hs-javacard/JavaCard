@@ -21,12 +21,12 @@ public class ChangePinTest {
         byte p1 = 0;
         byte p2 = 0;
 
-        Object[] objs = TestHelper.runAuth(sim, CLA);
+        Object[] objs = TestHelper.runAuth(sim, CLA, (short) 40);
         AESKey aesKey = (AESKey) objs[0];
         RSAPublicKey pkCard = (RSAPublicKey) objs[1];
 
         byte[] buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 41); // nonce
+        Util.setShort(buffer, (short) 0, (short) 40); // nonce
         Util.setShort(buffer, (short) 2, (short) 1234); // pin
 
         TestHelper.encryptAes(aesKey, buffer, (short) 4);
@@ -39,7 +39,7 @@ public class ChangePinTest {
         short log = Util.getShort(respData2, (short) 3);
 
         assertEquals("Incorrect r cla", CLA, respData2[0]);
-        assertEquals("Incorrect r nonce", 41, nonce);
+        assertEquals("Incorrect r nonce", 40, nonce);
         assertEquals("Incorrect r returned log", Log.PIN_CHANGED, log);
         assertEquals("Incorrect r SW", 36864, r.getSW());
     }

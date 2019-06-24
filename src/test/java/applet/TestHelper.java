@@ -11,7 +11,8 @@ import javax.smartcardio.CommandAPDU;
 import javax.smartcardio.ResponseAPDU;
 
 class TestHelper {
-    public static final byte CLA = (byte) 0xd0;
+
+    private static final byte CLA = (byte) 0xd0;
 
     private static final byte[] TEST_APPLET1_AID_BYTES = Hex.decode("01020304050607080A");
     private static final AID appletAID = new AID(TEST_APPLET1_AID_BYTES, (short) 0, (byte) TEST_APPLET1_AID_BYTES.length);
@@ -55,16 +56,16 @@ class TestHelper {
         return new Object[]{key, secret};
     }
 
-    static Object[] runAuth(JavaxSmartCardInterface sim, byte cla) {
+    static Object[] runAuth(JavaxSmartCardInterface sim, byte cla, short nonce) {
         byte p1 = 0;
         byte p2 = 0;
 
-        Object[] objs = TestHelper.runAuthNoPin(sim, cla);
+        Object[] objs = TestHelper.runAuthNoPin(sim, cla, nonce);
         AESKey aesKey = (AESKey) objs[0];
 
         // Correct pin
         byte[] buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 13); //nonce
+        Util.setShort(buffer, (short) 0, nonce);     //nonce
         Util.setShort(buffer, (short) 2, (short) 3); //pin
 
         encryptAes(aesKey, buffer, (short) 4);
@@ -73,7 +74,7 @@ class TestHelper {
         return objs;
     }
 
-    static Object[] runAuthNoPin(JavaxSmartCardInterface sim, byte cla) {
+    static Object[] runAuthNoPin(JavaxSmartCardInterface sim, byte cla, short nonce) {
         byte p1 = 0;
         byte p2 = 0;
 
@@ -93,7 +94,7 @@ class TestHelper {
 
         // set AES key
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 12);                           //nonce
+        Util.setShort(buffer, (short) 0, nonce);                                  //nonce
         Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 2, (short) 16); //aesKey
         Util.arrayCopy(secret, (short) 0, buffer, (short) 18, (short) 16);       //secret
         writePkRsa((RSAPublicKey) keyPair.getPublic(), buffer, (short) 34);     //public key terminal
