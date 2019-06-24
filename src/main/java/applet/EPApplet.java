@@ -29,6 +29,7 @@ public class EPApplet extends Applet implements ISO7816 {
     private byte[] ivData;
 
     private short cardNumber;
+    private byte[] secret;
 
     private short balance;
     private short paymentAmount;
@@ -67,6 +68,7 @@ public class EPApplet extends Applet implements ISO7816 {
         }
 
         pin = new OwnerPIN(PIN_TRY_LIMIT, MAX_PIN_SIZE);
+        secret = JCSystem.makeTransientByteArray((short) 16, JCSystem.CLEAR_ON_DESELECT);
 
         aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         rsaCipher = Cipher.getInstance(Cipher.ALG_RSA_PKCS1, false);
@@ -183,6 +185,8 @@ public class EPApplet extends Applet implements ISO7816 {
 
         pin.update(buffer, (short) (offset + 4), (byte) 2);
 
+        Util.arrayCopy(buffer, (short) (offset + 10), secret, (short) 0, (short) 16);
+
         initialized = true;
 
         JCSystem.commitTransaction();
@@ -224,7 +228,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
         switch (ins) {
             case 0: // respond with card number
-                retrievePkTAndSendCardNumber(apdu);
+                sendCardNumber(apdu);
                 break;
             case 1:
                 retrieveSymmetricKey(apdu);
@@ -283,7 +287,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
         switch (ins) {
             case 0: // respond with card number
-                retrievePkTAndSendCardNumber(apdu);
+                sendCardNumber(apdu);
                 break;
             case 1:
                 retrieveSymmetricKey(apdu);
@@ -353,7 +357,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
         switch (ins) {
             case 0: // respond with card number
-                retrievePkTAndSendCardNumber(apdu);
+                sendCardNumber(apdu);
                 break;
             case 1:
                 retrieveSymmetricKey(apdu);
@@ -480,7 +484,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
         switch (ins) {
             case 0: // respond with card number
-                retrievePkTAndSendCardNumber(apdu);
+                sendCardNumber(apdu);
                 break;
             case 1:
                 retrieveSymmetricKey(apdu);
@@ -527,29 +531,27 @@ public class EPApplet extends Applet implements ISO7816 {
 
     /**
      * Retrieve and initialize a public key of the terminal the card is communicating with.
-     * Respond with the CLA, the given nonce, and the card's number.
+     * Send the currect CLA and the cards number signed with its PrivateKey. Also include a plaintext variant of the card number.
      *
      * @param apdu to process.
      */
-    private void retrievePkTAndSendCardNumber(APDU apdu) {
+    private void sendCardNumber(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
-        nonce = Util.getShort(buffer, OFFSET_CDATA);
-
-        KeyHelper.init(pkTerminal, buffer, (short) (OFFSET_CDATA + 2));
-
         insCounter++;
 
         buffer[0] = claCounter;
-        Util.setShort(buffer, (short) 1, nonce);
-        Util.setShort(buffer, (short) 3, cardNumber);
+        Util.setShort(buffer, (short) 1, cardNumber);
 
-        short length = encryptRsa(apdu, (short) 5, pkTerminal);
-        sendResponse(apdu, length);
+        short length = encryptRsa(apdu, (short) 3, keyPair.getPrivate());
+        Util.setShort(buffer, length, cardNumber);
+
+        sendResponse(apdu, (short) (length + 2));
     }
 
     /**
      * Retrieve and initialize the symmetric AES key which will be used encrypt information during the current protocol.
-     * Respond with the CLA and the given nonce.
+     * Also check if the correct secret is retrieved. Stop the protocol run if the incorrect secret is retrieved.
+     * Respond with the CLA, the given nonce and a status code representing if a secret was correct.
      *
      * @param apdu to process.
      */
@@ -557,14 +559,28 @@ public class EPApplet extends Applet implements ISO7816 {
         byte[] buffer = decryptRsa(apdu);
 
         checkNonce(buffer);
-        aesKey.setKey(buffer, (short) 2);
+        aesKey.setKey(buffer, (short) 2);                   // Set AES key
+        KeyHelper.init(pkTerminal, buffer, (short) 34);     // Set terminal PublicKey
+
+        byte statusCode;
 
         buffer[0] = claCounter;
         Util.setShort(buffer, (short) 1, nonce);
 
-        insCounter++;
+        short compareResult = Util.arrayCompare(secret, (short) 0, buffer, (short) 18, (short) 16);
+        if (compareResult == 0) {
+            Util.arrayCopy(buffer, (short) 18, secret, (short) 0, (short) 16);  // Set secret
 
-        short length = encryptAes(apdu, (short) 3);
+            insCounter++;
+            statusCode = 1;
+        } else {
+            resetCounters();
+            statusCode = -1;
+        }
+
+        buffer[3] = statusCode;
+
+        short length = encryptAes(apdu, (short) 4);
         sendResponse(apdu, length);
     }
 

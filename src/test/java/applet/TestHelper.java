@@ -28,12 +28,13 @@ class TestHelper {
         return sim.transmitCommand(c1);
     }
 
-    static RSAPublicKey runInit(JavaxSmartCardInterface sim) {
+    static Object[] runInit(JavaxSmartCardInterface sim) {
         byte cla = -1;
         byte p1 = 0;
         byte p2 = 0;
 
-        byte[] data1 = new byte[14];
+        byte[] data1 = new byte[26];
+        byte[] secret = new byte[16];
 
         Util.setShort(data1, (short) 0, (short) 1); // cardNumber
         Util.setShort(data1, (short) 2, (short) 20); // balance
@@ -41,12 +42,17 @@ class TestHelper {
         Util.setShort(data1, (short) 6, (short) 5); // softLimit
         Util.setShort(data1, (short) 8, (short) 30); // hardLimit
 
+        RandomData random = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
+        random.generateData(secret, (short) 0, (short) 10);
+
+        Util.arrayCopy(secret, (short) 0, data1, (short) 10, (short) 16);
+
         ResponseAPDU r = TestHelper.createAndSendCommand(sim, cla, (byte) 0, p1, p2, data1);
 
         RSAPublicKey key = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, true);
         KeyHelper.init(key, r.getData(), (short) 1);
 
-        return key;
+        return new Object[]{key, secret};
     }
 
     static Object[] runAuth(JavaxSmartCardInterface sim, byte cla) {
@@ -71,7 +77,10 @@ class TestHelper {
         byte p1 = 0;
         byte p2 = 0;
 
-        RSAPublicKey cardPk = runInit(sim);
+        Object[] objs = runInit(sim);
+        RSAPublicKey cardPk = (RSAPublicKey) objs[0];
+        byte[] secret = (byte[]) objs[1];
+
         KeyPair keyPair = createKeyPairRsa();
 
         byte[] aesKeyBuffer = keyBufferAes();
@@ -80,18 +89,16 @@ class TestHelper {
         /////////////////////////////////////////////////////
 
         byte[] buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 11); //nonce
-        writePkRsa((RSAPublicKey) keyPair.getPublic(), buffer, (short) 2);
-
-        // check pkKeyTerminal number
         createAndSendCommand(sim, cla, (byte) 0, p1, p2, buffer);
 
         // set AES key
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 12); //nonce
+        Util.setShort(buffer, (short) 0, (short) 12);                           //nonce
         Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 2, (short) 16); //aesKey
+        Util.arrayCopy(secret, (short)0, buffer, (short) 18, (short) 16);       //secret
+        writePkRsa((RSAPublicKey) keyPair.getPublic(), buffer, (short) 34);     //public key terminal
 
-        encryptRsa(cardPk, buffer, (short) 18);
+        encryptRsa(cardPk, buffer, (short) 36);
         createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
         return new Object[]{aesKey, cardPk};
