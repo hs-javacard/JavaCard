@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class NonceTest {
 
-    private static final byte CLA = 0;
+    private static final byte CLA = (byte) 0xd1;
 
     @Test
     public void testFail() {

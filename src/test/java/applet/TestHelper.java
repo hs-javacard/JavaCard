@@ -11,6 +11,7 @@ import javax.smartcardio.CommandAPDU;
 import javax.smartcardio.ResponseAPDU;
 
 class TestHelper {
+    public static final byte CLA = (byte) 0xd0;
 
     private static final byte[] TEST_APPLET1_AID_BYTES = Hex.decode("01020304050607080A");
     private static final AID appletAID = new AID(TEST_APPLET1_AID_BYTES, (short) 0, (byte) TEST_APPLET1_AID_BYTES.length);
@@ -29,7 +30,6 @@ class TestHelper {
     }
 
     static Object[] runInit(JavaxSmartCardInterface sim) {
-        byte cla = -1;
         byte p1 = 0;
         byte p2 = 0;
 
@@ -47,9 +47,9 @@ class TestHelper {
 
         Util.arrayCopy(secret, (short) 0, data1, (short) 10, (short) 16);
 
-        ResponseAPDU r = TestHelper.createAndSendCommand(sim, cla, (byte) 0, p1, p2, data1);
+        ResponseAPDU r = TestHelper.createAndSendCommand(sim, CLA, (byte) 0, p1, p2, data1);
 
-        RSAPublicKey key = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, true);
+        RSAPublicKey key = (RSAPublicKey) KeyBuilder.buildKey(KeyBuilder.TYPE_RSA_PUBLIC, KeyBuilder.LENGTH_RSA_1024, false);
         KeyHelper.init(key, r.getData(), (short) 1);
 
         return new Object[]{key, secret};
@@ -95,7 +95,7 @@ class TestHelper {
         buffer = new byte[255];
         Util.setShort(buffer, (short) 0, (short) 12);                           //nonce
         Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 2, (short) 16); //aesKey
-        Util.arrayCopy(secret, (short)0, buffer, (short) 18, (short) 16);       //secret
+        Util.arrayCopy(secret, (short) 0, buffer, (short) 18, (short) 16);       //secret
         writePkRsa((RSAPublicKey) keyPair.getPublic(), buffer, (short) 34);     //public key terminal
 
         encryptRsa(cardPk, buffer, (short) 36);

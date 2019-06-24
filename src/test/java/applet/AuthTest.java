@@ -18,7 +18,7 @@ public class AuthTest {
         JavaxSmartCardInterface sim = TestHelper.createInterface();
         //TestHelper.runInit(sim);
 
-        byte cla = 1;
+        byte cla = (byte) 0xd2;
         byte p1 = 0;
         byte p2 = 0;
 

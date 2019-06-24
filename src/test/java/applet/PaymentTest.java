@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PaymentTest {
 
-    private static final byte CLA = 2;
+    private static final byte CLA = (byte) 0xd3;
 
     @Test
     public void testSuccessWithPin() {
