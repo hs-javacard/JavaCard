@@ -82,7 +82,29 @@ class TestHelper {
         RSAPublicKey cardPk = (RSAPublicKey) objs[0];
         byte[] secret = (byte[]) objs[1];
 
-        KeyPair keyPair = createKeyPairRsa();
+        byte[] aesKeyBuffer = keyBufferAes();
+        AESKey aesKey = createKeyAes();
+
+        /////////////////////////////////////////////////////
+
+        byte[] buffer = new byte[255];
+        createAndSendCommand(sim, cla, (byte) 0, p1, p2, buffer);
+
+        // set AES key
+        buffer = new byte[255];
+        Util.setShort(buffer, (short) 0, nonce);                                  //nonce
+        Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 2, (short) 16); //aesKey
+        Util.arrayCopy(secret, (short) 0, buffer, (short) 18, (short) 16);       //secret
+
+        encryptRsa(cardPk, buffer, (short) 34);
+        createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
+
+        return new Object[]{aesKey, cardPk, secret};
+    }
+
+    static Object[] runAuthNoPinNoInit(JavaxSmartCardInterface sim, byte cla, short nonce, RSAPublicKey cardPk, byte[] secret) {
+        byte p1 = 0;
+        byte p2 = 0;
 
         byte[] aesKeyBuffer = keyBufferAes();
         AESKey aesKey = createKeyAes();
@@ -97,12 +119,11 @@ class TestHelper {
         Util.setShort(buffer, (short) 0, nonce);                                  //nonce
         Util.arrayCopy(aesKeyBuffer, (short) 0, buffer, (short) 2, (short) 16); //aesKey
         Util.arrayCopy(secret, (short) 0, buffer, (short) 18, (short) 16);       //secret
-        writePkRsa((RSAPublicKey) keyPair.getPublic(), buffer, (short) 34);     //public key terminal
 
-        encryptRsa(cardPk, buffer, (short) 36);
+        encryptRsa(cardPk, buffer, (short) 34);
         createAndSendCommand(sim, cla, (byte) 1, p1, p2, buffer);
 
-        return new Object[]{aesKey, cardPk};
+        return new Object[]{aesKey, cardPk, secret};
     }
 
     static KeyPair createKeyPairRsa() {

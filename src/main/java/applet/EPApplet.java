@@ -114,12 +114,12 @@ public class EPApplet extends Applet implements ISO7816 {
         if (selectingApplet())  // we ignore this, it makes ins = -92
             return;
 
-//        if (validCounters(cla, ins)) {
-        claCounter = cla;
-//        } else {
-//            ISOException.throwIt(SW_CONDITIONS_NOT_SATISFIED);
-//            return;
-//        }
+        if (validCounters(cla, ins)) {
+            claCounter = cla;
+        } else {
+            ISOException.throwIt(SW_CONDITIONS_NOT_SATISFIED);
+            return;
+        }
 
         switch (cla) {
             case (byte) 0xd0:
@@ -138,8 +138,8 @@ public class EPApplet extends Applet implements ISO7816 {
                 deposit(apdu);
                 break;
             default:
-                ISOException.throwIt((short) (SW_CORRECT_LENGTH_00 | cla));
-//                ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
+//                ISOException.throwIt((short) (SW_CORRECT_LENGTH_00 | cla));
+                ISOException.throwIt(SW_CLA_NOT_SUPPORTED);
                 break;
         }
     }
@@ -617,11 +617,14 @@ public class EPApplet extends Applet implements ISO7816 {
             statusCode = -1;
         }
 
-        JCSystem.commitTransaction();
-
         buffer[0] = claCounter;
         buffer[3] = statusCode;
         Util.setShort(buffer, (short) 1, nonce);
+
+        if (pin.getTriesRemaining() == 0)
+            resetCounters();
+
+        JCSystem.commitTransaction();
 
         short length = encryptAes(apdu, (short) 4);
         sendResponse(apdu, length);
@@ -635,8 +638,11 @@ public class EPApplet extends Applet implements ISO7816 {
      */
     private void checkNonce(byte[] buffer) {
         short nonce = Util.getShort(buffer, (short) 0);
-        if (this.nonce != nonce)
+
+        if (this.nonce != nonce) {
+            resetCounters();
             ISOException.throwIt(SW_COMMAND_NOT_ALLOWED);
+        }
     }
 
     //<editor-fold desc="Counters">

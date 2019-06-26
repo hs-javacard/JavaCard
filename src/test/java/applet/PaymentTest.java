@@ -169,6 +169,7 @@ public class PaymentTest {
         Object[] objs = TestHelper.runAuthNoPin(sim, CLA, (short) 60);
         AESKey aesKey = (AESKey) objs[0];
         RSAPublicKey pkCard = (RSAPublicKey) objs[1];
+        byte[] secret = (byte[]) objs[2];
 
         // first payment of 25
         byte[] buffer = new byte[255];
@@ -225,8 +226,11 @@ public class PaymentTest {
         assertEquals("Incorrect r3 SW", 36864, r3.getSW());
 
         // second payment of 3
+        objs = TestHelper.runAuthNoPinNoInit(sim, CLA, (short) 70, pkCard, secret);
+        aesKey = (AESKey) objs[0];
+
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 60); // nonce
+        Util.setShort(buffer, (short) 0, (short) 70); // nonce
         Util.setShort(buffer, (short) 2, (short) 3); // payment
         Util.setShort(buffer, (short) 4, (short) 13); // day number
         Util.setShort(buffer, (short) 6, (short) 2019); // year number
@@ -239,12 +243,12 @@ public class PaymentTest {
 
         assertEquals("Incorrect r4 cla", CLA, respData[0]);
         assertEquals("Incorrect r4 status code", 1, respData[3]);
-        assertEquals("Incorrect r4 nonce", 60, nonce);
+        assertEquals("Incorrect r4 nonce", 70, nonce);
         assertEquals("Incorrect r4 SW", 36864, r4.getSW());
 
         // withdraw
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 60); // nonce
+        Util.setShort(buffer, (short) 0, (short) 70); // nonce
 
         TestHelper.encryptAes(aesKey, buffer, (short) 2);
         ResponseAPDU r5 = TestHelper.createAndSendCommand(sim, CLA, (byte) 4, p1, p2, buffer);
@@ -257,14 +261,17 @@ public class PaymentTest {
         log = Util.getShort(respData2, (short) 5);
 
         assertEquals("Incorrect r5 cla", CLA, respData2[0]);
-        assertEquals("Incorrect r5 nonce", 60, nonce);
+        assertEquals("Incorrect r5 nonce", 70, nonce);
         assertEquals("Incorrect r5 balance", 12, balance);
         assertEquals("Incorrect r5 returned log", Log.PAYMENT_COMPLETED, log);
         assertEquals("Incorrect r5 SW", 36864, r5.getSW());
 
         // third payment of 5
+        objs = TestHelper.runAuthNoPinNoInit(sim, CLA, (short) 80, pkCard, secret);
+        aesKey = (AESKey) objs[0];
+
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 60); // nonce
+        Util.setShort(buffer, (short) 0, (short) 80); // nonce
         Util.setShort(buffer, (short) 2, (short) 5); // payment
         Util.setShort(buffer, (short) 4, (short) 13); // day number
         Util.setShort(buffer, (short) 6, (short) 2019); // year number
@@ -277,12 +284,15 @@ public class PaymentTest {
 
         assertEquals("Incorrect r6 cla", CLA, respData[0]);
         assertEquals("Incorrect r6 status code", -3, respData[3]);
-        assertEquals("Incorrect r6 nonce", 60, nonce);
+        assertEquals("Incorrect r6 nonce", 80, nonce);
         assertEquals("Incorrect r6 SW", 36864, r6.getSW());
 
         // third payment of 5 again, the next day
+        objs = TestHelper.runAuthNoPinNoInit(sim, CLA, (short) 90, pkCard, secret);
+        aesKey = (AESKey) objs[0];
+
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 60); // nonce
+        Util.setShort(buffer, (short) 0, (short) 90); // nonce
         Util.setShort(buffer, (short) 2, (short) 5); // payment
         Util.setShort(buffer, (short) 4, (short) 14); // day number
         Util.setShort(buffer, (short) 6, (short) 2019); // year number
@@ -295,12 +305,12 @@ public class PaymentTest {
 
         assertEquals("Incorrect r7 cla", CLA, respData[0]);
         assertEquals("Incorrect r7 status code", 1, respData[3]);
-        assertEquals("Incorrect r7 nonce", 60, nonce);
+        assertEquals("Incorrect r7 nonce", 90, nonce);
         assertEquals("Incorrect r7 SW", 36864, r7.getSW());
 
         // withdraw
         buffer = new byte[255];
-        Util.setShort(buffer, (short) 0, (short) 60); // nonce
+        Util.setShort(buffer, (short) 0, (short) 90); // nonce
 
         TestHelper.encryptAes(aesKey, buffer, (short) 2);
         ResponseAPDU r8 = TestHelper.createAndSendCommand(sim, CLA, (byte) 4, p1, p2, buffer);
@@ -313,7 +323,7 @@ public class PaymentTest {
         log = Util.getShort(respData2, (short) 5);
 
         assertEquals("Incorrect r8 cla", CLA, respData2[0]);
-        assertEquals("Incorrect r8 nonce", 60, nonce);
+        assertEquals("Incorrect r8 nonce", 90, nonce);
         assertEquals("Incorrect r8 balance", 7, balance);
         assertEquals("Incorrect r8 returned log", Log.PAYMENT_COMPLETED, log);
         assertEquals("Incorrect r8 SW", 36864, r8.getSW());

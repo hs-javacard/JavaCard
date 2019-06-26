@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import javax.smartcardio.ResponseAPDU;
 
+import static javacard.framework.ISO7816.SW_CONDITIONS_NOT_SATISFIED;
 import static org.junit.Assert.assertEquals;
 
 public class AuthTest {
@@ -122,13 +123,7 @@ public class AuthTest {
         TestHelper.encryptAes(aesKey, buffer, (short) 4);
         r3 = TestHelper.createAndSendCommand(sim, cla, (byte) 2, p1, p2, buffer);
 
-        respData = TestHelper.decryptAes(aesKey, r3.getData());
-        nonce = Util.getShort(respData, (short) 1);
-
-        assertEquals("Incorrect r3 cla", cla, respData[0]);
-        assertEquals("Incorrect r3 nonce", 10, nonce);
-        assertEquals("Incorrect r3 status code", -1, respData[3]);
-        assertEquals("Incorrect r3 SW", 36864, r3.getSW());
+        assertEquals("Incorrect r3 SW", SW_CONDITIONS_NOT_SATISFIED, TestHelper.hexToDecimal(r3.getSW()));
     }
 
 }
