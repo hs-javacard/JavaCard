@@ -114,12 +114,12 @@ public class EPApplet extends Applet implements ISO7816 {
         if (selectingApplet())  // we ignore this, it makes ins = -92
             return;
 
-        if (validCounters(cla, ins)) {
+//        if (validCounters(cla, ins)) {
             claCounter = cla;
-        } else {
-            ISOException.throwIt(SW_CONDITIONS_NOT_SATISFIED);
-            return;
-        }
+//        } else {
+//            ISOException.throwIt(SW_CONDITIONS_NOT_SATISFIED);
+//            return;
+//        }
 
         switch (cla) {
             case (byte) 0xd0:
@@ -569,7 +569,7 @@ public class EPApplet extends Applet implements ISO7816 {
 
         nonce = Util.getShort(buffer, (short) 0);
         aesKey.setKey(buffer, (short) 2);                   // Set AES key
-        KeyHelper.init(pkTerminal, buffer, (short) 34);     // Set terminal PublicKey
+//        KeyHelper.init(pkTerminal, buffer, (short) 34);     // Set terminal PublicKey
 
         byte statusCode;
 
@@ -614,7 +614,11 @@ public class EPApplet extends Applet implements ISO7816 {
 
             statusCode = 1;
         } else {
-            statusCode = -1;
+            if (pin.getTriesRemaining() >0) {
+                statusCode = -1;
+            } else {
+                statusCode = -2;
+            }
         }
 
         buffer[0] = claCounter;
