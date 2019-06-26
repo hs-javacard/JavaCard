@@ -436,7 +436,6 @@ public class EPApplet extends Applet implements ISO7816 {
             resetCounters();
 
         } else {
-            totalToday += paymentAmount;
 
             statusCode = 1;
             insCounter += 2;
@@ -462,6 +461,7 @@ public class EPApplet extends Applet implements ISO7816 {
         JCSystem.beginTransaction();
 
         balance -= paymentAmount;
+        totalToday += paymentAmount;
 
         buffer[0] = claCounter;
         Util.setShort(buffer, (short) 1, nonce);

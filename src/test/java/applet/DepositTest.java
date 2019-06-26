@@ -42,7 +42,7 @@ public class DepositTest {
 
         assertEquals("Incorrect r cla", CLA, respData2[0]);
         assertEquals("Incorrect r nonce", 50, nonce);
-        assertEquals("Incorrect r balance", 5020, balance); // default amount is 20
+        assertEquals("Incorrect r balance", 5040, balance); // default amount is 40
         assertEquals("Incorrect r log", Log.DEPOSIT_COMPLETED, log);
         assertEquals("Incorrect r SW", 36864, r.getSW());
     }

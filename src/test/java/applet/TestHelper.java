@@ -38,7 +38,7 @@ class TestHelper {
         byte[] secret = new byte[16];
 
         Util.setShort(data1, (short) 0, (short) 1); // cardNumber
-        Util.setShort(data1, (short) 2, (short) 20); // balance
+        Util.setShort(data1, (short) 2, (short) 40); // balance
         Util.setShort(data1, (short) 4, (short) 3); // pin
         Util.setShort(data1, (short) 6, (short) 5); // softLimit
         Util.setShort(data1, (short) 8, (short) 30); // hardLimit
